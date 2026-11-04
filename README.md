@@ -23,6 +23,8 @@ The site asks each visitor once whether they are a patient or a provider. A pati
 | `config.js` | Supabase project URL, public key, and table name. |
 | `supabase/schema.sql` | Creates the table and its security rules. Run once in Supabase. |
 | `scripts/verify-supabase.sh` | Checks the database rules from the command line. |
+| `.github/workflows/pages.yml` | Publishes the site to GitHub Pages on every push to `main`. |
+| `.nojekyll` | Tells GitHub Pages to serve files as-is, with no Jekyll build. |
 | `previews/` | Screenshots of every page in every theme, and a side-by-side compare page. |
 | `.open-design/` | Open Design's record of the three design directions, with a compare page and contact sheet. |
 | `.claude/`, `.mcp.json` | Open Design tooling for Claude Code. Not part of the website. |
@@ -76,21 +78,25 @@ Keep the writing plain: short sentences, no jargon, phone numbers as digits. Kee
 
 ## Publish changes
 
-The site is meant to be served by GitHub Pages from the root of the repository.
+GitHub Pages serves the site. The workflow in `.github/workflows/pages.yml` runs on every push to `main`. It copies only the website files (the six HTML pages, `config.js`, and `assets/`) and publishes them. The README, screenshots, database files, and tooling are not published.
 
 One-time setup:
 
-1. On GitHub, open the repository, then **Settings**, then **Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**, pick the `main` branch and the `/ (root)` folder, and save.
-3. After a minute, the page shows the public address. Put that address in the QR code on the flyers.
+1. The repository must be public, or the GitHub account must be on a paid plan (Pro, Team, or Enterprise). GitHub Free does not serve Pages from a private repository. To make it public: **Settings**, scroll to **Danger Zone**, **Change visibility**.
+2. On GitHub, open the repository, then **Settings**, then **Pages**.
+3. Under **Build and deployment**, set **Source** to **GitHub Actions**. There is nothing else to pick.
+4. Open the **Actions** tab, select **Deploy to GitHub Pages**, and click **Run workflow** (or push any change to `main`).
+5. After about a minute, the run shows the public address, normally `https://23251.github.io/HESJLP/`. The same address appears under **Settings**, then **Pages**. Put that address in the QR code on the flyers.
 
-To publish a change afterward: commit and push to `main`. GitHub Pages updates in about a minute.
+To publish a change afterward: commit and push to `main`. The workflow runs on its own and the site updates in about a minute. The **Actions** tab shows each run and whether it passed.
 
 ```bash
 git add -A
 git commit -m "Describe the change"
 git push
 ```
+
+To add a new page to the published site, add its file name to the `cp` line in `.github/workflows/pages.yml`.
 
 ## Visitor count (Supabase)
 
