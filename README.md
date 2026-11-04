@@ -13,7 +13,7 @@ The site asks each visitor once whether they are a patient or a provider. A pati
 | `get-care.html` | Where to get care without Medicaid: ER, community health centers, CareLink, hospital bills, kids and pregnancy. |
 | `clinics.html` | Free and low-cost clinics in Cook County, with addresses, phone links, and map links. |
 | `who-to-call.html` | Every phone number and website on the site in one list. |
-| `about.html` | What the site is and who made it. Edit the placeholder text here. |
+| `about.html` | What the site is and who made it, plus the full **Sources** list (`about.html#sources`), grouped by topic. Edit the placeholder text here. |
 | `assets/css/base.css` | Layout and components for every page. Colors, fonts, and shapes come from the theme file. |
 | `assets/css/theme-green.css` | Theme A: the flyer's green and mint palette. This is the default. |
 | `assets/css/theme-civic.css` | Theme B: navy and gold, public-service look. |
@@ -69,6 +69,7 @@ Every page is a normal HTML file. Open it in any text editor.
 - **Add a section.** Each section is a `<section id="..."> ... </section>` block with an HTML comment above it naming the section. Copy an existing section, give it a new `id` and a new `<h2>`, and edit the text inside. Keep one `<h1>` per page.
 - **Add a clinic.** In `clinics.html`, copy one `<li class="clinic">` block and change the name, address, phone, and map link. The map link is a Google Maps search for the address.
 - **Add a page.** Copy `about.html`, rename it, change the `<title>`, the `<meta name="description">`, and the `<h1>`. Then add a link to it in the `<nav>` of every page and in the "Find what you need" cards on `index.html`.
+- **Cite a source.** At the end of a section or card that states a fact, add one line: `<p class="source-note">Source: <a href="URL" target="_blank" rel="noopener">Short name</a></p>` ("Sources:" with commas for more than one). Add any new source to the Sources list on `about.html` and update its "Last checked" date.
 - **Change "Information checked Nov. 2026".** It appears in the footer of every page. Search for it and change it everywhere.
 
 Keep the writing plain: short sentences, no jargon, phone numbers as digits. Keep text contrast high and tap targets large. The class names in `assets/css/base.css` are listed in a comment at the top of that file.

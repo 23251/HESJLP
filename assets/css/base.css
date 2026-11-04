@@ -42,6 +42,8 @@
      .btn              button-like link;  .btn-primary  filled;  .btn-ghost  outline
      .icon             inline SVG icon (always aria-hidden with a text label)
      .tag              small label chip
+     .source-note      small "Source: ..." line at the end of a section or card
+     .source-list      the grouped list of sources on about.html;  .source-for  what it backs up
      .visually-hidden  hidden visually, read by screen readers
    Visitor prompt (markup injected by visitor-count.js)
      .vp  .vp-card  .vp-btn  .vp-skip
@@ -412,3 +414,15 @@ p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn
 .clinic-addr + .clinic-note { margin-top: -0.125rem; }
 .phone-name a { display: inline-flex; align-items: center; min-height: 44px; }
 .card-title { font-family: var(--font-display); font-weight: 700; line-height: 1.3; }
+
+/* ---------- Source notes and the sources list ---------- */
+/* Links keep the shared inline-link padding (p a / li a rule above) for a ~26px tap area */
+.source-note { margin: 1rem 0 0; max-width: 70ch; font-size: var(--text-sm, 1.0625rem); line-height: 1.6; color: var(--color-text-muted); }
+.clinic .source-note, .phone-item .source-note { margin-top: 0; }
+.callout-strong .source-note { color: var(--color-primary-contrast); }
+.source-list { list-style: none; padding: 0; margin: 0 0 2rem; display: grid; gap: 0.875rem; max-width: 70ch; }
+.source-list:last-child { margin-bottom: 0; }
+.source-list li { display: flex; flex-direction: column; align-items: flex-start; }
+.source-list a { font-weight: 600; }
+.source-for { color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); line-height: 1.5; }
+#sources h3 { margin-top: 1.5rem; }

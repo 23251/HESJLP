@@ -113,7 +113,6 @@
   var MARKUP =
     '<div class="vp-card">' +
       '<h2 id="vp-title">Welcome. Who is visiting today?</h2>' +
-      '<p id="vp-desc">This helps us count how many patients and families use this site. We do not collect names or personal information.</p>' +
       '<button type="button" class="vp-btn" data-role="patient">I am a patient or family member</button>' +
       '<button type="button" class="vp-btn" data-role="provider">I am a health care provider or staff</button>' +
       '<button type="button" class="vp-skip" data-role="skip">Skip</button>' +
@@ -137,7 +136,6 @@
     dialog.setAttribute("role", "dialog");
     dialog.setAttribute("aria-modal", "true");
     dialog.setAttribute("aria-labelledby", "vp-title");
-    dialog.setAttribute("aria-describedby", "vp-desc");
     dialog.hidden = true;
     dialog.innerHTML = MARKUP;
 
