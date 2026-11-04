@@ -1,0 +1,107 @@
+/* =========================================================================
+   Theme A: Forest Green (matches the printed flyer)
+   Tokens only, plus layout rules scoped to html[data-theme="green"].
+   Contrast (WCAG 2.1, computed):
+     text #1b211a on bg #ffffff ........ 16.4:1
+     text #1b211a on mint #eaf3e7 ...... 14.4:1
+     muted #4a5647 on #ffffff .......... 7.7:1
+     muted #4a5647 on mint #eaf3e7 ..... 6.8:1
+     primary #2f5f28 on #ffffff ........ 7.5:1 (links, headings, buttons)
+     primary #2f5f28 on mint #eaf3e7 ... 6.6:1
+     #ffffff on primary #2f5f28 ........ 7.5:1 (buttons, step circles, strip)
+     #ffffff on accent #1f4019 ......... 11.6:1 (hover state)
+     mint #eaf3e7 on primary #2f5f28 ... 6.6:1 (secondary text in strip)
+     focus #1b211a on #ffffff .......... 16.4:1 (14.4:1 on mint); focus-inverse #ffffff on primary 7.5:1
+     border-strong #5f7a59 on #ffffff .. 4.8:1 (UI component edges)
+     footer: #ffffff on #1b211a ......... 16.4:1
+   ========================================================================= */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eaf3e7;
+  --color-text: #1b211a;
+  --color-text-muted: #4a5647;
+  --color-primary: #2f5f28;
+  --color-primary-contrast: #ffffff;
+  --color-accent: #1f4019;
+  --color-accent-contrast: #ffffff;
+  --color-border: #cfdfca;
+  --color-border-strong: #5f7a59;
+  --color-focus: #1b211a;
+  --color-focus-inverse: #ffffff;
+  --color-link: #2f5f28;
+  --color-overlay: rgba(19, 33, 17, 0.62);
+
+  --font-body: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-display: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --text-base: 1.125rem;          /* 18px on mobile */
+  --text-sm: 1.0625rem;           /* 17px: smallest text on the site */
+  --text-lg: 1.25rem;
+  --text-h1: clamp(2.125rem, 1.6rem + 2.4vw, 3.25rem);
+  --text-h2: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --text-h3: 1.25rem;
+  --weight-display: 700;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(27, 33, 26, 0.06), 0 4px 14px rgba(27, 33, 26, 0.07);
+  --shadow-card-hover: 0 2px 4px rgba(27, 33, 26, 0.08), 0 10px 24px rgba(27, 33, 26, 0.12);
+  --space-unit: 0.5rem;
+  --step-size: 2.75rem;
+}
+
+/* ---------- Direction A layout: mint hero band with a split on desktop ---------- */
+html[data-theme="green"] .hero {
+  background: var(--color-surface-alt);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+html[data-theme="green"] .hero h1 { color: var(--color-primary); }
+
+/* Topic buttons: white rounded cards on the mint band, green circle icon */
+html[data-theme="green"] .topic-btn {
+  background: var(--color-surface);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-card);
+}
+html[data-theme="green"] .topic-btn:hover { border-color: var(--color-primary); }
+html[data-theme="green"] .topic-btn .topic-icon {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-radius: 50%;
+}
+
+/* Page header band on inner pages echoes the flyer's mint panel */
+html[data-theme="green"] .page-head {
+  background: var(--color-surface-alt);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+html[data-theme="green"] .page-head h1 { color: var(--color-primary); }
+
+/* Section headings get a short green rule, like the flyer's headers */
+html[data-theme="green"] .section > .container > h2::after,
+html[data-theme="green"] .section > .container > .section-head > h2::after,
+html[data-theme="green"] .section-alt > .container > h2::after,
+html[data-theme="green"] .section-alt > .container > .section-head > h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 4px;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+@media (min-width: 900px) {
+  html[data-theme="green"] .hero .container {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  html[data-theme="green"] .hero .topic-grid { grid-template-columns: 1fr; margin-top: 0; }
+  html[data-theme="green"] .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
