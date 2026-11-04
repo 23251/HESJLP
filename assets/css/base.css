@@ -306,7 +306,9 @@ a:hover { text-decoration-thickness: 3px; }
 .btn-ghost:hover { background: var(--color-surface-alt); }
 
 /* Inline tel links keep the line box but get a ~44px tall hit area via padding */
-.tel { display: inline; padding: 0.6em 0; font-weight: 700; white-space: nowrap; }
+.tel { display: inline; padding: 0.65em 0; font-weight: 700; white-space: nowrap; }
+/* Plain links inside text: extra vertical padding so the tap area is at least ~26px without changing line spacing */
+p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn) { padding-block: 0.2em; }
 
 /* ---------- Phone strip (who to call band) ---------- */
 .phone-strip { background: var(--color-primary); color: var(--color-primary-contrast); padding: 1.75rem 0; margin-top: 2rem; }
@@ -353,6 +355,7 @@ a:hover { text-decoration-thickness: 3px; }
 .footer-note { max-width: 60ch; margin: 0; }
 .footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 1rem; }
 .footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+.footer-note a { display: inline-block; padding-block: 0.6em; }
 .phone-strip + .site-footer { margin-top: 0; }
 
 /* ---------- Visitor prompt (DOM from visitor-count.js) ---------- */
