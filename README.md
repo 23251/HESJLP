@@ -1,0 +1,172 @@
+# Medicaid Is Changing: patient education site
+
+A small, plain website that puts the content of five printed flyers and posters online for Illinois Medicaid patients and families. Patients reach it from a QR code on the flyer, so it is built for phones first. It is plain HTML, CSS, and JavaScript. There is no build step and nothing to install.
+
+The site asks each visitor once whether they are a patient or a provider. A patient or provider answer is saved as one row in a Supabase table so the project can count how many patients use the site. No names, no personal data.
+
+## What is where
+
+| Path | What it is |
+|---|---|
+| `index.html` | Home page. Topic buttons, "Does this apply to you?", key dates, 3 things to do, links to every page. |
+| `keep-your-medicaid.html` | Work requirements, exemptions, keeping coverage, non-citizens, what to do if you lose Medicaid. |
+| `get-care.html` | Where to get care without Medicaid: ER, community health centers, CareLink, hospital bills, kids and pregnancy. |
+| `clinics.html` | Free and low-cost clinics in Cook County, with addresses, phone links, and map links. |
+| `who-to-call.html` | Every phone number and website on the site in one list. |
+| `about.html` | What the site is and who made it. Edit the placeholder text here. |
+| `assets/css/base.css` | Layout and components for every page. Colors, fonts, and shapes come from the theme file. |
+| `assets/css/theme-green.css` | Theme A: the flyer's green and mint palette. This is the default. |
+| `assets/css/theme-civic.css` | Theme B: navy and gold, public-service look. |
+| `assets/css/theme-warm.css` | Theme C: cream, teal, and coral, soft clinic look. |
+| `assets/js/site.js` | Skip link, mobile menu, and the theme preview switch. |
+| `assets/js/visitor-count.js` | The patient/provider prompt and the Supabase save. |
+| `config.js` | Supabase project URL, public key, and table name. |
+| `supabase/schema.sql` | Creates the table and its security rules. Run once in Supabase. |
+| `scripts/verify-supabase.sh` | Checks the database rules from the command line. |
+| `previews/` | Screenshots of every page in every theme, and a side-by-side compare page. |
+| `.open-design/` | Open Design's record of the three design directions, with a compare page and contact sheet. |
+| `.claude/`, `.mcp.json` | Open Design tooling for Claude Code. Not part of the website. |
+
+## Preview the site on your computer
+
+Option 1: double-click `index.html`. Everything works from a file, including the visitor prompt.
+
+Option 2: serve the folder, which matches how GitHub Pages serves it:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open http://localhost:8000 in a browser. Use your browser's device toolbar (F12, then the phone icon) to view it at phone width.
+
+## Look at the three renderings
+
+All three themes share the same HTML. To view a theme, add `?theme=` to any page address:
+
+- `index.html?theme=green` (the flyer palette, default)
+- `index.html?theme=civic`
+- `index.html?theme=warm`
+
+The choice is remembered in that browser until you pick another. Screenshots of every page in every theme are in `previews/`, and `previews/index.html` shows them side by side. Open Design's own comparison of the three directions is at `.open-design/a-mobile-first-public-health-education-website-f/compare.html`.
+
+### Choose one theme for good
+
+1. In every HTML file, change the `href` of the `<link id="theme-css">` tag in the `<head>` to the theme file you want, and set `data-theme="..."` on the `<html>` tag to match (`green`, `civic`, or `warm`).
+2. Delete the two theme files you are not using.
+3. Optional: in `assets/js/site.js`, delete section 3 (the theme preview switch) so `?theme=` does nothing.
+
+A quick way to do step 1 for all pages from a terminal, for example to choose `warm`:
+
+```bash
+sed -i 's/theme-green\.css/theme-warm.css/; s/data-theme="green"/data-theme="warm"/' *.html
+```
+
+## Edit the content
+
+Every page is a normal HTML file. Open it in any text editor.
+
+- **Change a word, date, or number.** Find the text in the page and change it. Phone numbers appear twice: once as the visible text and once in the `href="tel:+1..."` link. Change both.
+- **Add a section.** Each section is a `<section id="..."> ... </section>` block with an HTML comment above it naming the section. Copy an existing section, give it a new `id` and a new `<h2>`, and edit the text inside. Keep one `<h1>` per page.
+- **Add a clinic.** In `clinics.html`, copy one `<li class="clinic">` block and change the name, address, phone, and map link. The map link is a Google Maps search for the address.
+- **Add a page.** Copy `about.html`, rename it, change the `<title>`, the `<meta name="description">`, and the `<h1>`. Then add a link to it in the `<nav>` of every page and in the "Find what you need" cards on `index.html`.
+- **Change "Information checked Nov. 2026".** It appears in the footer of every page. Search for it and change it everywhere.
+
+Keep the writing plain: short sentences, no jargon, phone numbers as digits. Keep text contrast high and tap targets large. The class names in `assets/css/base.css` are listed in a comment at the top of that file.
+
+## Publish changes
+
+The site is meant to be served by GitHub Pages from the root of the repository.
+
+One-time setup:
+
+1. On GitHub, open the repository, then **Settings**, then **Pages**.
+2. Under **Build and deployment**, choose **Deploy from a branch**, pick the `main` branch and the `/ (root)` folder, and save.
+3. After a minute, the page shows the public address. Put that address in the QR code on the flyers.
+
+To publish a change afterward: commit and push to `main`. GitHub Pages updates in about a minute.
+
+```bash
+git add -A
+git commit -m "Describe the change"
+git push
+```
+
+## Visitor count (Supabase)
+
+### How it works
+
+On the first visit in a browser, `assets/js/visitor-count.js` shows a small window: "Who is visiting today?" with three choices: patient or family member, provider or staff, or skip. The answer is remembered in that browser (localStorage key `hesjlp-visitor`), so the prompt never shows there again and repeat visits are not counted. A patient or provider answer is sent as one row, `{"role": "patient"}` or `{"role": "provider"}`, to the table `visitor_responses`. Skip sends nothing.
+
+If Supabase is down, paused, or unreachable, the pages work normally. The answer is simply not counted. Nothing is retried later.
+
+The key in `config.js` is Supabase's public "publishable" key. It is meant to be visible in web pages. The security rules in `supabase/schema.sql` are what protect the data: with that key, a visitor can add one patient or provider row and can never read, change, or delete rows.
+
+### One-time setup
+
+1. Sign in at https://supabase.com/dashboard and open the project.
+2. Left menu: **SQL Editor**, then **New query**.
+3. Paste the whole contents of `supabase/schema.sql` and click **Run**. Running it again later is safe. It never deletes saved answers.
+4. Check it from a terminal in this folder. Every line should say PASS. Each run adds one test row with role `provider`, never `patient`.
+
+```bash
+scripts/verify-supabase.sh https://bgwaofspmqaxnhpsbwvy.supabase.co sb_publishable_5Tfjj-lpZHxYzpJFHWbBTA_uJMJFyai
+```
+
+This was run on Nov. 4, 2026 and every check passed.
+
+### View the data
+
+- **Table Editor:** in the dashboard, left menu **Table Editor**, then `visitor_responses`. This shows every row.
+- **SQL Editor**, totals by role:
+
+```sql
+select role, count(*) from public.visitor_responses group by role order by role;
+```
+
+- Per day, Chicago time:
+
+```sql
+select (created_at at time zone 'America/Chicago')::date as day, role, count(*)
+from public.visitor_responses group by day, role order by day desc, role;
+```
+
+Only the project owner can read these. The public website key cannot.
+
+### Restore a paused database
+
+Supabase pauses free-plan projects after about a week with no activity. It sends an email first. A paused project keeps its data but does not accept requests.
+
+1. Open https://supabase.com/dashboard and select the project.
+2. Click **Restore project**. It takes a few minutes.
+3. Run `scripts/verify-supabase.sh` again to confirm.
+
+While the project is paused, the site still works and the prompt still shows, but answers are not counted. The dashboard says how long a paused project can still be restored, so do not leave it paused for months.
+
+### Turn the count off
+
+In `config.js`, set `supabaseUrl: ""`. The prompt no longer appears.
+
+### See the prompt again in your own browser
+
+Open any page with `?resetvisitor=1` added to the address, for example `index.html?resetvisitor=1`. Or run `localStorage.removeItem('hesjlp-visitor')` in the browser console and reload.
+
+## Verification checklist
+
+| Check | How | Status |
+|---|---|---|
+| An answer saves | `scripts/verify-supabase.sh`, check 1 returns HTTP 201. Also clicked through in a real browser. | Passed Nov. 4, 2026 |
+| A visitor can't read, edit, or delete rows | `scripts/verify-supabase.sh`, checks 2 and 3 return HTTP 401 | Passed Nov. 4, 2026 |
+| The database rejects invalid values | `scripts/verify-supabase.sh`, check 4: role `robot` and an extra field are rejected | Passed Nov. 4, 2026 |
+| The site works if Supabase is unavailable | Loaded with `config.js` pointing at an unreachable address: no errors, prompt closes, pages work | Passed Nov. 4, 2026 |
+| The layout works on a phone | Screenshots at 320, 375, 768, and 1280 px wide in `previews/`, no horizontal scroll | Passed Nov. 4, 2026 |
+| WCAG 2.1 AA | axe-core on every page and theme, keyboard walk-through, contrast ratios listed at the top of each theme file | See `previews/VERIFICATION.md` |
+
+## Cost
+
+Everything runs on free tiers: GitHub Pages and a Supabase free-plan project. No card is needed.
+
+## Design notes
+
+The three directions were planned with Open Design (the `open-design` tooling in `.claude/` and `.mcp.json`). The brief and the three direction descriptions are recorded under `.open-design/`. In a Claude Code session with that tooling, you can ask it to show the comparison, pick a direction, or explore new ones.
+
+This site gives information, not legal or medical advice. Information was checked Nov. 2026.
