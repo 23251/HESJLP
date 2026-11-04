@@ -4,3 +4,7 @@
 # Local tooling
 node_modules/
 .DS_Store
+
+# Local design records
+previews/
+.open-design/
