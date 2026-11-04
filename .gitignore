@@ -1,0 +1,6 @@
+# Open Design check runs are timestamped screenshots; regenerate rather than commit
+.open-design/.checks/
+
+# Local tooling
+node_modules/
+.DS_Store

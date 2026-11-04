@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Medicaid Is Changing: Warm Clinic (cream, teal, coral)",
+  "entry": ".open-design/a-mobile-first-public-health-education-website-f/warm-clinic-soft-friendly.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "standalone",
+    "site",
+    "png",
+    "jpeg",
+    "pdf"
+  ],
+  "createdAt": "2026-11-04T21:58:33.582Z",
+  "updatedAt": "2026-11-04T21:58:33.582Z",
+  "sourceSkillId": "od:prototype:web-prototype",
+  "explorationId": "a-mobile-first-public-health-education-website-f",
+  "directionId": "warm-clinic-soft-friendly"
+}

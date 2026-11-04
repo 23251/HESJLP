@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home | Medicaid Is Changing</title>
+  <meta name="description" content="Medicaid is changing in Illinois. What&#x27;s changing, what to do now, and where to get help.">
+  <style>
+/* =========================================================================
+   base.css — structure, layout, components, accessibility, print.
+   Colors, fonts, radii, shadows and spacing come ONLY from custom properties
+   defined on :root in a theme file (theme-green.css, theme-civic.css, ...).
+
+   CLASS INVENTORY (copy existing markup to add more; no new CSS needed)
+   Layout
+     .skip-link        "Skip to main content", first focusable element
+     .container        centered max-width wrapper with side gutters
+     .site-header      top bar;  .brand  site name link;  .brand-mark  logo circle
+     .nav-toggle       "Menu" disclosure button (aria-expanded, shown by site.js)
+     .site-nav         list of page links; [aria-current="page"] marks current
+     .site-footer      footer;  .footer-note  "Information checked" line
+     .section          a self-contained content <section id="..."> with <h2>
+     .section-alt      mint/alt background variant of .section
+     .section-head     optional wrapper for h2 + .lead
+     .page-head        inner-page title band (h1 + .lead)
+     .lead             short plain-language intro sentence
+     .prose            text block limited to ~70ch
+     .jump-nav         "On this page" pill links to section ids
+   Components
+     .hero             home page title band;  .hero-sub  one-line subtitle
+     .topic-grid       the big topic buttons;  .topic-btn  one button
+                       .topic-icon / .topic-label / .topic-hint  its parts
+     .card-grid        responsive grid of cards
+     .card             rounded panel;  .card-link  whole card is a link
+                       .card-title / .card-text  its parts;  .card-plain  no shadow
+     .choice-grid      "do ONE of these" parallel cards;  .choice  one card
+                       .choice-or  the "or" divider between choices
+     .steps            <ol> with numbers in solid circles
+     .checklist        <ul> with check icons (exemptions, "keep Medicaid if")
+     .bullets          plain <ul> with primary-colored bullets
+     .date-list        key dates;  .date  the date label
+     .callout          highlighted note box;  .callout-strong  primary-filled
+     .path             "Manage My Case" click-path breadcrumb
+     .phone-strip      full-width band with the main phone number
+     .phone-list       who-to-call list;  .phone-item  one entry
+                       .phone-name / .phone-for / .phone-meta / .phone-num
+     .tel              a tel: link styled as a big tappable number
+     .clinic-list      list of clinic cards;  .clinic  one card
+                       .clinic-name / .clinic-addr / .clinic-actions
+     .btn              button-like link;  .btn-primary  filled;  .btn-ghost  outline
+     .icon             inline SVG icon (always aria-hidden with a text label)
+     .tag              small label chip
+     .visually-hidden  hidden visually, read by screen readers
+   Visitor prompt (markup injected by visitor-count.js)
+     .vp  .vp-card  .vp-btn  .vp-skip
+   ========================================================================= */
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { font-size: 100%; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; scroll-padding-top: 1rem; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+[hidden] { display: none !important; }
+img, svg { max-width: 100%; }
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display, 700);
+  line-height: 1.2;
+  margin: 0 0 calc(var(--space-unit) * 2);
+  color: var(--color-text);
+}
+h1 { font-size: var(--text-h1, 2.25rem); letter-spacing: -0.01em; }
+h2 { font-size: var(--text-h2, 1.75rem); }
+h3 { font-size: var(--text-h3, 1.25rem); }
+p, ul, ol { margin: 0 0 calc(var(--space-unit) * 2); }
+p:last-child, ul:last-child, ol:last-child { margin-bottom: 0; }
+strong { font-weight: 700; }
+
+a { color: var(--color-link); text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+a:hover { text-decoration-thickness: 3px; }
+
+/* Focus: 3px high-contrast ring with offset on every interactive element */
+:focus { outline: none; }
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* On primary-colored areas the ring flips to the inverse color */
+.phone-strip, .callout-strong, .site-footer { --color-focus: var(--color-focus-inverse, #fff); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute; left: 0.75rem; top: -10rem; z-index: 1000;
+  background: var(--color-primary); color: var(--color-primary-contrast);
+  padding: 0.75rem 1.25rem; border-radius: var(--radius-sm);
+  font-weight: 700; text-decoration: none; min-height: 44px;
+}
+.skip-link:focus { top: 0.75rem; outline: 3px solid var(--color-focus); outline-offset: 3px; }
+
+.icon { width: 1.25em; height: 1.25em; flex: none; vertical-align: -0.2em; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- Layout ---------- */
+.container { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 1rem; }
+@media (min-width: 600px) { .container { padding: 0 1.5rem; } }
+.prose, .lead { max-width: 70ch; }
+.lead { font-size: var(--text-lg, 1.25rem); color: var(--color-text); }
+
+/* ---------- Header + nav ---------- */
+.site-header { background: var(--color-surface); border-bottom: 1px solid var(--color-border); position: relative; z-index: 10; }
+.site-header .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem; padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.brand {
+  display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.125rem;
+  color: var(--color-text); text-decoration: none;
+}
+.brand-mark {
+  display: inline-grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 50%;
+  background: var(--color-primary); color: var(--color-primary-contrast); flex: none;
+}
+.brand-mark .icon { width: 1.25rem; height: 1.25rem; }
+.nav-toggle {
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 44px; min-width: 44px;
+  padding: 0.5rem 1rem; font: inherit; font-weight: 700; font-size: 1.0625rem;
+  color: var(--color-primary); background: var(--color-surface);
+  border: 2px solid var(--color-primary); border-radius: var(--radius-pill, 999px); cursor: pointer;
+}
+.nav-toggle[aria-expanded="true"] { background: var(--color-primary); color: var(--color-primary-contrast); }
+.site-nav { width: 100%; }
+.site-nav ul { list-style: none; margin: 0; padding: 0.25rem 0 0.5rem; display: flex; flex-direction: column; gap: 0.25rem; }
+.site-nav a {
+  display: flex; align-items: center; min-height: 48px; padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-sm); font-weight: 600; color: var(--color-text); text-decoration: none;
+}
+.site-nav a:hover { background: var(--color-surface-alt); }
+.site-nav a[aria-current="page"] { background: var(--color-surface-alt); color: var(--color-primary); box-shadow: inset 4px 0 0 var(--color-primary); }
+.js .site-nav.is-collapsed { display: none; }
+
+@media (min-width: 900px) {
+  .site-header .container { flex-wrap: nowrap; }
+  .nav-toggle { display: none !important; }
+  .js .site-nav.is-collapsed, .site-nav { display: block; width: auto; }
+  .site-nav ul { flex-direction: row; padding: 0; gap: 0.25rem; }
+  .site-nav a { min-height: 44px; padding: 0.5rem 0.75rem; }
+  .site-nav a[aria-current="page"] { box-shadow: inset 0 -3px 0 var(--color-primary); }
+}
+
+/* ---------- Hero (home) ---------- */
+.hero { padding: 2rem 0 2.25rem; }
+.hero-sub { font-size: var(--text-lg, 1.25rem); max-width: 34ch; margin-bottom: 0.75rem; }
+.hero-note { color: var(--color-text-muted); max-width: 46ch; }
+.topic-grid { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 0.875rem; }
+.topic-btn {
+  display: flex; align-items: center; gap: 1rem; min-height: 4.5rem;
+  padding: 1rem 1.125rem; border-radius: var(--radius-md);
+  color: var(--color-text); text-decoration: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.topic-btn:hover { box-shadow: var(--shadow-card-hover, var(--shadow-card)); transform: translateY(-1px); }
+.topic-icon { display: inline-grid; place-items: center; width: 3rem; height: 3rem; flex: none; }
+.topic-icon .icon { width: 1.5rem; height: 1.5rem; }
+.topic-text { display: flex; flex-direction: column; flex: 1; }
+.topic-label { font-family: var(--font-display); font-weight: 700; font-size: 1.3125rem; line-height: 1.25; color: var(--color-primary); }
+.topic-hint { font-size: var(--text-sm, 1.0625rem); color: var(--color-text-muted); line-height: 1.4; margin-top: 0.15rem; }
+.topic-btn > .icon { color: var(--color-primary); width: 1.5rem; height: 1.5rem; }
+
+/* ---------- Inner page head ---------- */
+.page-head { padding: 1.75rem 0 2rem; }
+.page-head .lead { margin-bottom: 0; }
+.jump-nav { margin-top: 1.25rem; }
+.jump-nav h2 { font-size: var(--text-sm, 1.0625rem); font-weight: 700; margin: 0 0 0.5rem; color: var(--color-text); }
+.jump-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.jump-nav a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill, 999px); background: var(--color-surface);
+  border: 2px solid var(--color-border-strong, var(--color-primary));
+  color: var(--color-primary); font-weight: 600; text-decoration: none; font-size: var(--text-sm, 1.0625rem);
+}
+.jump-nav a:hover { border-color: var(--color-primary); background: var(--color-surface-alt); }
+
+/* ---------- Sections ---------- */
+.section { padding: 2.25rem 0; }
+.section + .section { padding-top: 0.75rem; }
+.section-alt { background: var(--color-surface-alt); padding: 2.25rem 0; margin: 1.5rem 0; }
+.section + .section-alt, .section-alt + .section { padding-top: 2.25rem; }
+.section .container > h3 { margin-top: 1.5rem; }
+.section-head { margin-bottom: 1.25rem; }
+.section-head .lead { margin-top: 0.25rem; }
+@media (min-width: 900px) { .section, .section-alt { padding: 3rem 0; } .section + .section { padding-top: 1rem; } }
+
+/* ---------- Cards ---------- */
+.card-grid { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+@media (min-width: 600px) { .card-grid { grid-template-columns: repeat(2, 1fr); } }
+.card {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: 1.25rem;
+}
+.card-plain { box-shadow: none; }
+.card-title { font-size: var(--text-h3, 1.25rem); margin: 0 0 0.375rem; }
+.card-text { color: var(--color-text-muted); margin: 0; }
+.card-link {
+  display: flex; gap: 1rem; align-items: flex-start; height: 100%; min-height: 44px;
+  color: inherit; text-decoration: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.card-link .card-title { color: var(--color-primary); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.18em; }
+.card-link:hover { border-color: var(--color-primary); box-shadow: var(--shadow-card-hover, var(--shadow-card)); }
+.card-link .card-icon {
+  display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; flex: none;
+  border-radius: var(--radius-sm); background: var(--color-surface-alt); color: var(--color-primary);
+}
+
+/* "Do ONE of these" parallel cards */
+.choice-grid { list-style: none; padding: 0; margin: 0 0 1.25rem; display: grid; gap: 0.75rem; }
+@media (min-width: 760px) { .choice-grid { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+.choice { display: flex; flex-direction: column; gap: 0.5rem; }
+.choice-big { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; line-height: 1.2; color: var(--color-primary); margin: 0; }
+.choice .card-text { color: var(--color-text); }
+.choice-label {
+  align-self: flex-start; font-size: var(--text-sm, 1.0625rem); font-weight: 700;
+  color: var(--color-primary); background: var(--color-surface-alt);
+  padding: 0.125rem 0.75rem; border-radius: var(--radius-pill, 999px);
+}
+
+/* ---------- Lists ---------- */
+.steps { list-style: none; counter-reset: step; padding: 0; margin: 0; display: grid; gap: 1.25rem; max-width: 70ch; }
+.steps > li { counter-increment: step; position: relative; padding-left: calc(var(--step-size, 2.75rem) + 1rem); min-height: var(--step-size, 2.75rem); }
+.steps > li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0;
+  display: grid; place-items: center;
+  width: var(--step-size, 2.75rem); height: var(--step-size, 2.75rem); border-radius: 50%;
+  background: var(--color-primary); color: var(--color-primary-contrast);
+  font-family: var(--font-display); font-weight: 700; font-size: 1.375rem; line-height: 1;
+}
+.steps h3, .steps .step-title { display: block; font-size: var(--text-h3, 1.25rem); font-weight: 700; margin: 0.4rem 0 0.25rem; }
+.steps p { margin: 0; }
+
+.checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; max-width: 70ch; }
+.checklist > li {
+  position: relative; padding: 0.75rem 1rem 0.75rem 3.25rem;
+  background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+}
+.checklist > li::before {
+  content: ""; position: absolute; left: 0.875rem; top: 0.85rem;
+  width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-primary);
+}
+.checklist > li::after {
+  content: ""; position: absolute; left: 1.33rem; top: 1.18rem;
+  width: 0.4rem; height: 0.7rem; border: solid var(--color-primary-contrast); border-width: 0 3px 3px 0; transform: rotate(45deg);
+}
+@media (min-width: 900px) { .checklist.two-col { grid-template-columns: 1fr 1fr; max-width: none; } }
+
+.bullets { padding-left: 1.25rem; max-width: 70ch; }
+.bullets > li { margin-bottom: 0.625rem; padding-left: 0.25rem; }
+.bullets > li::marker { color: var(--color-primary); font-size: 1.1em; }
+
+.date-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+@media (min-width: 760px) { .date-list { grid-template-columns: repeat(3, 1fr); gap: 1rem; } }
+.date-list > li { display: flex; flex-direction: column; gap: 0.375rem; }
+.date {
+  align-self: flex-start; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem;
+  color: var(--color-primary-contrast); background: var(--color-primary);
+  padding: 0.2rem 0.85rem; border-radius: var(--radius-pill, 999px);
+}
+
+/* ---------- Callouts ---------- */
+.callout {
+  background: var(--color-surface-alt); border-radius: var(--radius-md);
+  padding: 1.125rem 1.25rem; max-width: 70ch; margin: 1.25rem 0 0;
+  border-left: 6px solid var(--color-primary);
+}
+.callout > :first-child { margin-top: 0; }
+.callout h3 { margin-top: 0; margin-bottom: 0.375rem; }
+.callout-strong { background: var(--color-primary); color: var(--color-primary-contrast); border-left-color: var(--color-accent); }
+.callout-strong h2, .callout-strong h3, .callout-strong a { color: var(--color-primary-contrast); }
+
+.path { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; }
+.path li { display: inline-flex; align-items: center; gap: 0.375rem; }
+.path li span {
+  background: var(--color-surface); border: 1px solid var(--color-border-strong, var(--color-border));
+  border-radius: var(--radius-sm); padding: 0.125rem 0.625rem; font-weight: 600;
+}
+.path li + li::before { content: "\2192"; color: var(--color-primary); font-weight: 700; }
+
+.tag {
+  display: inline-block; font-size: var(--text-sm, 1.0625rem); font-weight: 700; line-height: 1.3;
+  padding: 0.125rem 0.625rem; border-radius: var(--radius-pill, 999px);
+  background: var(--color-surface-alt); color: var(--color-primary);
+}
+.eyebrow { display: block; font-size: var(--text-sm, 1.0625rem); font-weight: 700; color: var(--color-primary); margin-bottom: 0.25rem; }
+
+/* ---------- Buttons + tel links ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 48px; padding: 0.625rem 1.25rem; border-radius: var(--radius-pill, 999px);
+  font: inherit; font-weight: 700; text-decoration: none; cursor: pointer;
+  border: 2px solid var(--color-primary);
+}
+.btn-primary { background: var(--color-primary); color: var(--color-primary-contrast); }
+.btn-primary:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-contrast); }
+.btn-ghost { background: var(--color-surface); color: var(--color-primary); }
+.btn-ghost:hover { background: var(--color-surface-alt); }
+
+/* Inline tel links keep the line box but get a ~44px tall hit area via padding */
+.tel { display: inline; padding: 0.65em 0; font-weight: 700; white-space: nowrap; }
+/* Plain links inside text: extra vertical padding so the tap area is at least ~26px without changing line spacing */
+p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn) { padding-block: 0.2em; }
+
+/* ---------- Phone strip (who to call band) ---------- */
+.phone-strip { background: var(--color-primary); color: var(--color-primary-contrast); padding: 1.75rem 0; margin-top: 2rem; }
+.phone-strip .container { display: flex; flex-direction: column; gap: 1rem; }
+.phone-strip h2 { color: var(--color-primary-contrast); font-size: var(--text-h3, 1.25rem); margin: 0; }
+.phone-strip p { margin: 0; }
+.phone-strip a { color: var(--color-primary-contrast); }
+.phone-strip .tel { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); }
+.phone-strip .strip-more { font-weight: 600; }
+.phone-strip .btn { border-color: var(--color-primary-contrast); background: var(--color-primary-contrast); color: var(--color-primary); align-self: flex-start; }
+.phone-strip .btn:hover { background: var(--color-surface-alt); }
+@media (min-width: 900px) { .phone-strip .container { flex-direction: row; align-items: center; justify-content: space-between; } }
+
+/* ---------- Who to call list ---------- */
+.phone-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; }
+@media (min-width: 760px) { .phone-list { grid-template-columns: repeat(2, 1fr); gap: 1rem; } }
+.phone-item { display: flex; flex-direction: column; gap: 0.25rem; }
+.phone-name { font-size: var(--text-h3, 1.25rem); margin: 0; }
+.phone-for { margin: 0; }
+.phone-meta { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); }
+.phone-num { margin: 0.25rem 0 0; display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
+.phone-num .tel { font-size: 1.375rem; }
+.phone-num .tel-tty { font-size: var(--text-base); }
+.compact-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--color-border); max-width: 52rem; }
+.compact-list li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 1rem; padding: 0.375rem 0; border-bottom: 1px solid var(--color-border); }
+
+/* ---------- Clinics ---------- */
+.clinic-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+@media (min-width: 760px) { .clinic-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .clinic-list { grid-template-columns: repeat(3, 1fr); } }
+.clinic { display: flex; flex-direction: column; gap: 0.5rem; }
+.clinic-name { font-size: var(--text-h3, 1.25rem); margin: 0; }
+.clinic-addr { margin: 0; font-style: normal; }
+.clinic-note { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); }
+.clinic-actions { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: auto; padding-top: 0.75rem; }
+.clinic-actions .btn { min-height: 44px; padding: 0.4rem 1rem; }
+.group-meta { display: grid; gap: 0.5rem; margin-bottom: 1.25rem; max-width: 70ch; }
+.group-meta p { margin: 0; }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--color-text); color: var(--color-bg); padding: 2rem 0 2.5rem; margin-top: 0; }
+.site-footer a { color: var(--color-bg); }
+.site-footer .container { display: grid; gap: 1.25rem; }
+.footer-note { max-width: 60ch; margin: 0; }
+.footer-links { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0 1rem; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+.footer-note a { display: inline-block; padding-block: 0.6em; }
+.phone-strip + .site-footer { margin-top: 0; }
+
+/* ---------- Visitor prompt (DOM from visitor-count.js) ---------- */
+.vp {
+  position: fixed; inset: 0; z-index: 2000; display: flex; align-items: flex-end; justify-content: center;
+  padding: 1rem; background: var(--color-overlay, rgba(0, 0, 0, 0.6)); overflow-y: auto;
+}
+@media (min-width: 600px) { .vp { align-items: center; } }
+.vp-card {
+  width: 100%; max-width: 30rem; background: var(--color-surface); color: var(--color-text);
+  border-radius: var(--radius-lg); padding: 1.5rem 1.25rem 1.25rem; box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.vp-card h2 { font-size: 1.5rem; margin: 0; color: var(--color-primary); }
+.vp-card p { margin: 0 0 0.5rem; }
+.vp-btn {
+  display: block; width: 100%; min-height: 52px; padding: 0.75rem 1rem; text-align: left;
+  font: inherit; font-weight: 700; cursor: pointer;
+  background: var(--color-primary); color: var(--color-primary-contrast);
+  border: 2px solid var(--color-primary); border-radius: var(--radius-md);
+}
+.vp-btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-contrast); }
+.vp-skip {
+  align-self: center; min-height: 44px; min-width: 44px; padding: 0.5rem 1.25rem;
+  font: inherit; font-weight: 600; cursor: pointer; background: transparent;
+  color: var(--color-link); border: 0; text-decoration: underline; text-underline-offset: 0.18em;
+}
+.vp :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+
+/* ---------- Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .topic-btn:hover { transform: none; }
+}
+
+/* ---------- Print ---------- */
+@media print {
+  .skip-link, .nav-toggle, .site-nav, .jump-nav, .vp, .clinic-actions .map-link, .topic-btn > .icon { display: none !important; }
+  body { font-size: 12pt; line-height: 1.45; background: #fff; color: #000; }
+  .hero, .page-head, .section-alt, .phone-strip, .site-footer, .callout, .callout-strong { background: #fff !important; color: #000 !important; box-shadow: none !important; }
+  .phone-strip *, .site-footer *, .callout-strong * { color: #000 !important; }
+  .card, .topic-btn, .checklist > li { box-shadow: none !important; border: 1px solid #999 !important; break-inside: avoid; }
+  .steps > li::before, .date, .checklist > li::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  a { color: #000 !important; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-weight: normal; font-size: 0.9em; word-break: break-all; }
+  a[href^="tel:"]::after { content: ""; }
+  .section, .section-alt { padding: 0.75rem 0; margin: 0; }
+  h2, h3 { break-after: avoid; }
+}
+
+/* ---------- Small additions ---------- */
+.card-link .card-title, .card-link .card-text { display: block; }
+.tel-big .tel { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); }
+.clinic-addr + .clinic-note { margin-top: -0.125rem; }
+.phone-name a { display: inline-flex; align-items: center; min-height: 44px; }
+.card-title { font-family: var(--font-display); font-weight: 700; line-height: 1.3; }
+
+</style>
+  <style>
+/* =========================================================================
+   Theme A: Forest Green (matches the printed flyer)
+   Tokens only, plus layout rules scoped to html[data-theme="green"].
+   Contrast (WCAG 2.1, computed):
+     text #1b211a on bg #ffffff ........ 16.4:1
+     text #1b211a on mint #eaf3e7 ...... 14.4:1
+     muted #4a5647 on #ffffff .......... 7.7:1
+     muted #4a5647 on mint #eaf3e7 ..... 6.8:1
+     primary #2f5f28 on #ffffff ........ 7.5:1 (links, headings, buttons)
+     primary #2f5f28 on mint #eaf3e7 ... 6.6:1
+     #ffffff on primary #2f5f28 ........ 7.5:1 (buttons, step circles, strip)
+     #ffffff on accent #1f4019 ......... 11.6:1 (hover state)
+     mint #eaf3e7 on primary #2f5f28 ... 6.6:1 (secondary text in strip)
+     focus #1b211a on #ffffff .......... 16.4:1 (14.4:1 on mint); focus-inverse #ffffff on primary 7.5:1
+     border-strong #5f7a59 on #ffffff .. 4.8:1 (UI component edges)
+     footer: #ffffff on #1b211a ......... 16.4:1
+   ========================================================================= */
+:root {
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eaf3e7;
+  --color-text: #1b211a;
+  --color-text-muted: #4a5647;
+  --color-primary: #2f5f28;
+  --color-primary-contrast: #ffffff;
+  --color-accent: #1f4019;
+  --color-accent-contrast: #ffffff;
+  --color-border: #cfdfca;
+  --color-border-strong: #5f7a59;
+  --color-focus: #1b211a;
+  --color-focus-inverse: #ffffff;
+  --color-link: #2f5f28;
+  --color-overlay: rgba(19, 33, 17, 0.62);
+
+  --font-body: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --font-display: "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  --text-base: 1.125rem;          /* 18px on mobile */
+  --text-sm: 1.0625rem;           /* 17px: smallest text on the site */
+  --text-lg: 1.25rem;
+  --text-h1: clamp(2.125rem, 1.6rem + 2.4vw, 3.25rem);
+  --text-h2: clamp(1.5rem, 1.25rem + 1.1vw, 2rem);
+  --text-h3: 1.25rem;
+  --weight-display: 700;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(27, 33, 26, 0.06), 0 4px 14px rgba(27, 33, 26, 0.07);
+  --shadow-card-hover: 0 2px 4px rgba(27, 33, 26, 0.08), 0 10px 24px rgba(27, 33, 26, 0.12);
+  --space-unit: 0.5rem;
+  --step-size: 2.75rem;
+}
+
+/* ---------- Direction A layout: mint hero band with a split on desktop ---------- */
+html[data-theme="green"] .hero {
+  background: var(--color-surface-alt);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+html[data-theme="green"] .hero h1 { color: var(--color-primary); }
+
+/* Topic buttons: white rounded cards on the mint band, green circle icon */
+html[data-theme="green"] .topic-btn {
+  background: var(--color-surface);
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-card);
+}
+html[data-theme="green"] .topic-btn:hover { border-color: var(--color-primary); }
+html[data-theme="green"] .topic-btn .topic-icon {
+  background: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-radius: 50%;
+}
+
+/* Page header band on inner pages echoes the flyer's mint panel */
+html[data-theme="green"] .page-head {
+  background: var(--color-surface-alt);
+  border-bottom-left-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+html[data-theme="green"] .page-head h1 { color: var(--color-primary); }
+
+/* Section headings get a short green rule, like the flyer's headers */
+html[data-theme="green"] .section > .container > h2::after,
+html[data-theme="green"] .section > .container > .section-head > h2::after,
+html[data-theme="green"] .section-alt > .container > h2::after,
+html[data-theme="green"] .section-alt > .container > .section-head > h2::after {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 4px;
+  margin-top: 0.5rem;
+  border-radius: 2px;
+  background: var(--color-primary);
+}
+
+@media (min-width: 900px) {
+  html[data-theme="green"] .hero .container {
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  html[data-theme="green"] .hero .topic-grid { grid-template-columns: 1fr; margin-top: 0; }
+  html[data-theme="green"] .card-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19l7-7"/></svg></span>Medicaid Is Changing</a>
+      <button type="button" class="nav-toggle" aria-expanded="true" aria-controls="site-nav" hidden>Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+        <li><a href="keep-your-medicaid.html">Keep your Medicaid</a></li>
+        <li><a href="get-care.html">Get care</a></li>
+        <li><a href="clinics.html">Clinics</a></li>
+        <li><a href="who-to-call.html">Who to call</a></li>
+        <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <!-- Section: Hero with the three topic buttons -->
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <div class="container">
+        <div>
+          <h1 id="page-title">Medicaid Is Changing</h1>
+          <p class="hero-sub">Some people could lose their coverage. Here's how to stay covered.</p>
+          <p class="hero-note">What's changing in Illinois, what to do now, and where to get help.</p>
+        </div>
+        <ul class="topic-grid">
+          <li><a class="topic-btn" href="keep-your-medicaid.html"><span class="topic-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span class="topic-text"><span class="topic-label">Keep your Medicaid</span><span class="topic-hint">Work rules, exemptions, renewals</span></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="topic-btn" href="get-care.html"><span class="topic-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 10v5M9.5 12.5h5"/></svg></span><span class="topic-text"><span class="topic-label">Lost Medicaid? Get care</span><span class="topic-hint">You can still get care</span></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="topic-btn" href="who-to-call.html"><span class="topic-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span class="topic-text"><span class="topic-label">Who to call</span><span class="topic-hint">Phone numbers, TTY lines, hours</span></span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section: Does this apply to you? -->
+    <section class="section" id="apply" aria-labelledby="apply-title">
+      <div class="container">
+        <h2 id="apply-title">Does this apply to you?</h2>
+        <div class="prose">
+          <p>Work rules and 6-month renewals are for <strong>ACA Adults</strong>: people with Medicaid through the ACA (Obamacare).</p>
+          <p>Most are 19 to 64, aren't on Medicare, and don't have a child under 18 living with them.</p>
+        </div>
+        <div class="callout">
+          <h3>Not sure?</h3>
+          <p>Check State letters for your &ldquo;medical group,&rdquo; ask your health plan, or go to <a href="https://abe.illinois.gov">Manage My Case</a>:</p>
+          <ol class="path" aria-label="Where to click in Manage My Case">
+            <li><span>Case Summary</span></li>
+            <li><span>Benefit Details</span></li>
+            <li><span>Notices</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Key dates -->
+    <section class="section-alt" id="key-dates" aria-labelledby="dates-title">
+      <div class="container">
+        <h2 id="dates-title">Key dates</h2>
+        <ul class="date-list">
+          <li class="card card-plain"><span class="date">Oct. 1, 2026</span><span>Some non-citizens lost federally funded Medicaid.</span></li>
+          <li class="card card-plain"><span class="date">Dec. 31, 2026</span><span>Work rules apply to new applications made after 5 p.m.</span></li>
+          <li class="card card-plain"><span class="date">Jan. 1, 2027</span><span>Work rules and 6-month renewals begin (first renewals: March).</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section: 3 things you can do -->
+    <section class="section" id="three-things" aria-labelledby="three-title">
+      <div class="container">
+        <h2 id="three-title">3 things you can do</h2>
+        <ol class="steps">
+          <li><h3>Open all mail from the State</h3><p>Letters tell you what you need to do and by when.</p></li>
+          <li><h3>Keep your address and phone up to date</h3><p>Tell HFS right away if anything changes.</p></li>
+          <li><h3>Renew on time</h3><p>Starting in 2027, some adults must renew every 6 months and show work, school, or volunteer hours.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Section: Cards to every page -->
+    <section class="section" id="topics" aria-labelledby="topics-title">
+      <div class="container">
+        <h2 id="topics-title">Find what you need</h2>
+        <ul class="card-grid">
+          <li><a class="card card-link" href="keep-your-medicaid.html"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></span><span><span class="card-title">Keep your Medicaid</span><span class="card-text">Work requirements, who doesn't need to meet them, renewals, and rules for non-citizens.</span></span></a></li>
+          <li><a class="card card-link" href="get-care.html"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/><path d="M12 10v5M9.5 12.5h5"/></svg></span><span><span class="card-title">Lost Medicaid? Get care</span><span class="card-text">Emergency care, community health centers, CareLink, and help with hospital bills.</span></span></a></li>
+          <li><a class="card card-link" href="clinics.html"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 21V8l8-5 8 5v13z"/><path d="M12 10v6M9 13h6"/></svg></span><span><span class="card-title">Free and low-cost clinics</span><span class="card-text">Clinics in Cook County, with addresses and phone numbers.</span></span></a></li>
+          <li><a class="card card-link" href="who-to-call.html"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span><span><span class="card-title">Who to call</span><span class="card-text">Every phone number in one list, with TTY lines and hours.</span></span></a></li>
+          <li><a class="card card-link" href="about.html"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg></span><span><span class="card-title">About this site</span><span class="card-text">Who made this site and where to learn more.</span></span></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Section: Who to call strip -->
+    <section class="phone-strip" id="call-hfs" aria-labelledby="call-hfs-title">
+      <div class="container">
+        <div>
+          <h2 id="call-hfs-title">Questions? Call Illinois Medicaid (HFS)</h2>
+          <p><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+          <p>Coverage &amp; renewal questions</p>
+        </div>
+        <a class="btn" href="who-to-call.html">See every phone number<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-note">Information checked Nov. 2026. Call ahead, since programs and services can change.</p>
+      <ul class="footer-links" aria-label="Footer">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="keep-your-medicaid.html">Keep your Medicaid</a></li>
+        <li><a href="get-care.html">Get care</a></li>
+        <li><a href="clinics.html">Clinics</a></li>
+        <li><a href="who-to-call.html">Who to call</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+      <p class="footer-note">This is not legal or medical advice. <a href="about.html">About this site</a></p>
+    </div>
+  </footer>
+  </body>
+</html>

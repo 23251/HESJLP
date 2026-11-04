@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "Medicaid Is Changing: Civic Clear (navy and gold)",
+  "entry": ".open-design/a-mobile-first-public-health-education-website-f/civic-clear-public-service-high-contrast.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "standalone",
+    "site",
+    "png",
+    "jpeg",
+    "pdf"
+  ],
+  "createdAt": "2026-11-04T21:58:33.078Z",
+  "updatedAt": "2026-11-04T21:58:33.078Z",
+  "sourceSkillId": "od:prototype:web-prototype",
+  "explorationId": "a-mobile-first-public-health-education-website-f",
+  "directionId": "civic-clear-public-service-high-contrast"
+}
