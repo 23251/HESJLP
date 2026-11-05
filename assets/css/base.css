@@ -325,7 +325,7 @@ a:hover { text-decoration-thickness: 3px; }
 
 /* Emergency card: terracotta edge + warm tint + icon, so it reads first while others stay calm */
 .card-urgent {
-  border-left: 6px solid var(--color-call, #9e3a1d);
+  border-left: 6px solid var(--color-urgent, #9e3a1d);
   background: var(--color-urgent-tint, #fcf1ec);
 }
 .card-urgent .eyebrow { color: var(--color-urgent-text, #7f2e17); background: var(--color-urgent-pill, #f7ddd2); }
@@ -397,11 +397,12 @@ a:hover { text-decoration-thickness: 3px; }
 .tel-big .tel:hover, .phone-strip .tel:hover, .phone-num .tel:hover, .compact-list .tel:hover {
   background: var(--color-call-hover, var(--color-accent)); border-color: var(--color-call-hover, var(--color-accent)); color: var(--color-call-contrast, #fff);
 }
-/* On the dark green callout the button gets a white edge so it stays distinct from the green */
-.callout-strong .tel-big .tel { border-color: var(--color-primary-contrast); }
+/* On the dark green callout the button flips to white with green text */
+.callout-strong .tel-big .tel { background: var(--color-surface); border-color: var(--color-surface); color: var(--color-primary); }
+.callout-strong .tel-big .tel:hover { background: var(--color-surface-alt); border-color: var(--color-surface-alt); color: var(--color-accent); }
 /* TTY: same button shape and icon, outlined, so it doesn't compete with the main number */
 .phone-num .tel-tty, .phone-num .tel-tty:hover { background: var(--color-surface); color: var(--color-call, var(--color-primary)); border-color: var(--color-call, var(--color-primary)); }
-.phone-num .tel-tty:hover { background: var(--color-urgent-tint, var(--color-surface-alt)); color: var(--color-call-hover, var(--color-accent)); }
+.phone-num .tel-tty:hover { background: var(--color-surface-alt); color: var(--color-call-hover, var(--color-accent)); }
 /* Bigger hero-size number */
 .tel-big .tel, .phone-strip .tel { font-size: clamp(1.375rem, 1.15rem + 1.1vw, 1.75rem); padding: 0.5rem 1.375rem; }
 /* Plain links inside text: extra vertical padding so the tap area is at least ~26px without changing line spacing */

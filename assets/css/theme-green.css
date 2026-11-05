@@ -14,8 +14,8 @@
      focus #1b211a on #ffffff .......... 16.4:1 (14.4:1 on mint); focus-inverse #ffffff on primary 7.5:1
      border-strong #5f7a59 on #ffffff .. 4.8:1 (UI component edges)
      footer: #ffffff on #1b211a ......... 16.4:1
-     #ffffff on call #9e3a1d ........... 6.8:1 (tap-to-call buttons); hover #7f2e17 9.1:1
-     call #9e3a1d vs #ffffff / tint / mint 6.8 / 6.2 / 6.0:1 (button edge, emergency border)
+     call buttons use primary green: #ffffff on #2f5f28 7.5:1; hover #1f4019 11.6:1
+     urgent #9e3a1d vs #ffffff / tint 6.8 / 6.2:1 (Emergency card edge only)
      text #1b211a on urgent tint #fcf1ec 14.8:1; urgent text #7f2e17 on pill #f7ddd2 7.0:1
      subtle #595959 on #ffffff / mint / tint 7.0 / 6.2 / 6.3:1 (source notes)
    ========================================================================= */
@@ -41,8 +41,9 @@
   --color-focus-inverse: #ffffff;
   --color-link: #2f5f28;
   --color-overlay: rgba(19, 33, 17, 0.62);
-  --color-call: #9e3a1d;           /* terracotta accent: call buttons + emergency edge */
-  --color-call-hover: #7f2e17;
+  --color-call: #2f5f28;           /* call buttons use the site green */
+  --color-call-hover: #1f4019;
+  --color-urgent: #9e3a1d;         /* terracotta: Emergency card only */
   --color-call-contrast: #ffffff;
   --color-urgent-tint: #fcf1ec;
   --color-urgent-pill: #f7ddd2;
