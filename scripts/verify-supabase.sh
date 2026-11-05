@@ -11,13 +11,13 @@
 #
 # Checks:
 #   0. Table exists (explains if supabase/schema.sql has not been run yet)
-#   1. Insert a valid answer           -> must succeed (HTTP 201)
+#   1. Insert a valid answer ('provider') and a visit ('visit') -> must succeed (HTTP 201)
 #   2. Read rows                       -> must return nothing
 #   3. Update / delete rows            -> must change nothing
 #   4. Insert bad data (role "robot", or an extra field) -> must be rejected
 #
-# NOTE: check 1 adds ONE real row with role 'provider' each time you run this
-# (provider, not patient, so patient counts are not affected).
+# NOTE: check 1 adds TWO real rows each time you run this: one 'provider' and
+# one 'visit' (never 'patient', so patient counts are not affected).
 #
 # Exit code: 0 if every check passes, 1 if any check fails.
 
@@ -62,7 +62,7 @@ pass() { printf 'PASS  %-34s HTTP %s  %s\n' "$1" "$2" "$3"; }
 fail() { printf 'FAIL  %-34s HTTP %s  %s\n' "$1" "$2" "$3"; FAILS=$((FAILS + 1)); }
 
 echo "Checking $ENDPOINT"
-echo "(Check 1 inserts one test row with role 'provider', so patient counts are not affected.)"
+echo "(Check 1 inserts two test rows, role 'provider' and role 'visit', so patient counts are not affected.)"
 echo
 
 # ---- 0. Pre-check: does the table exist / is the project reachable? ----
@@ -93,6 +93,12 @@ if [ "$CODE" = "201" ]; then
   pass "1. insert valid row (provider)" "$CODE" "website can save an answer"
 else
   fail "1. insert valid row (provider)" "$CODE" "expected 201: $(excerpt "$BODY")"
+fi
+request POST "$ENDPOINT" '{"role":"visit"}' "Prefer: return=minimal"
+if [ "$CODE" = "201" ]; then
+  pass "1b. insert visit row (visit)" "$CODE" "website can count a first visit"
+else
+  fail "1b. insert visit row (visit)" "$CODE" "expected 201 (run supabase/schema.sql again to allow 'visit'): $(excerpt "$BODY")"
 fi
 
 # ---- 2. Select must return nothing ----

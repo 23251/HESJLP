@@ -2,11 +2,15 @@
  * visitor-count.js — the one-time "Who is visiting today?" prompt.
  *
  * WHAT IT DOES
- *   The first time someone opens the site in a browser, a small banner asks
- *   whether they are a patient/family member or a provider/staff (or Skip).
- *   The answer is remembered in that browser (localStorage key
- *   "hesjlp-visitor") so the prompt never shows there again. A patient or
- *   provider answer is sent to Supabase as ONE row: {"role": "..."}.
+ *   The first time someone opens the site in a browser, ONE row
+ *   {"role": "visit"} is sent to Supabase, so every first-time visitor is
+ *   counted even if they never answer. Then a small bar pinned to the bottom
+ *   of the screen asks whether they are a patient/family member or a
+ *   provider/staff (or Skip). The bar stays on every page until they choose.
+ *   A patient or provider answer is sent as ONE more row: {"role": "..."}.
+ *   Both facts are remembered in that browser (localStorage key
+ *   "hesjlp-visitor"), so the visit is counted once and the bar never shows
+ *   there again after an answer.
  *   Nothing else is sent: no names, no IP logging by us, no cookies.
  *   If Supabase is down, paused, or unreachable, the site works normally and
  *   the answer is simply not counted (errors go to console.debug only).
@@ -63,6 +67,20 @@
     }
   }
 
+  // What is stored, as JSON:
+  //   {"visitedAt": "..."}                                  visit counted, not answered yet
+  //   {"visitedAt": "...", "role": "patient", "at": "..."}  answered
+  // Older values from before the visit count look like {"role": "...", "at": "..."}
+  // and still mean "answered".
+  function readState() {
+    var raw = storageGet();
+    if (raw === null) return null;
+    try {
+      var state = JSON.parse(raw);
+      return (state && typeof state === "object") ? state : {};
+    } catch (e) { return {}; }
+  }
+
   // Testing hook (the only global this file creates).
   window.__hesjlpVisitorPrompt = {
     reset: function () { return storageRemove(); }
@@ -112,9 +130,11 @@
 
   var MARKUP =
     '<div class="vp-card">' +
-      '<h2 id="vp-title">Welcome. Who is visiting today?</h2>' +
-      '<button type="button" class="vp-btn" data-role="patient">I am a patient or family member</button>' +
-      '<button type="button" class="vp-btn" data-role="provider">I am a health care provider or staff</button>' +
+      '<h2 id="vp-title">Who is visiting today?</h2>' +
+      '<div class="vp-actions">' +
+        '<button type="button" class="vp-btn" data-role="patient">Patient or family member</button>' +
+        '<button type="button" class="vp-btn" data-role="provider">Provider or staff</button>' +
+      '</div>' +
       '<button type="button" class="vp-skip" data-role="skip">Skip</button>' +
     '</div>';
 
@@ -126,11 +146,20 @@
     var cfg = getConfig();
     if (!cfg) { debug("no supabaseUrl in SITE_CONFIG; prompt disabled"); return; }
     if (!storageWorks()) { debug("localStorage unavailable; prompt disabled"); return; }
-    if (storageGet() !== null) return; // already answered in this browser
+    var state = readState();
+    if (state && state.role) return; // already answered in this browser
     if (document.getElementById("visitor-prompt")) return; // already on page
 
+    // First time in this browser: count the visit once, before asking anything.
+    // Remember it first, so a failed request is never retried later.
+    if (state === null) {
+      state = { visitedAt: new Date().toISOString() };
+      storageSet(JSON.stringify(state));
+      send(cfg, "visit");
+    }
+
     var body = document.body;
-    // A small banner in normal page flow, right under the site header.
+    // A small bar pinned to the bottom of the screen (CSS: .vp in base.css).
     // Not a dialog: no aria-modal, no focus trap, no inert background.
     var banner = document.createElement("section");
     banner.id = "visitor-prompt";
@@ -140,16 +169,36 @@
 
     var buttons = [].slice.call(banner.querySelectorAll("button[data-role]"));
 
+    // The bar covers the bottom of the screen, so give the page the same
+    // amount of extra room at the bottom (and keep focused elements above it).
+    function fitBanner() {
+      try {
+        var h = banner.offsetHeight;
+        body.style.paddingBottom = h + "px";
+        document.documentElement.style.scrollPaddingBottom = h + "px";
+      } catch (e) { /* ignore */ }
+    }
+    function unfitBanner() {
+      try {
+        body.style.paddingBottom = "";
+        document.documentElement.style.scrollPaddingBottom = "";
+      } catch (e) { /* ignore */ }
+      window.removeEventListener("resize", fitBanner);
+    }
+
     var done = false;
     function choose(role) {
       if (done) return;
       done = true;
       // 1. Remember first, so a failed request is never retried later.
-      storageSet(JSON.stringify({ role: role, at: new Date().toISOString() }));
-      // 2. Remove the banner. If keyboard focus was on it, move focus to the
+      state.role = role;
+      state.at = new Date().toISOString();
+      storageSet(JSON.stringify(state));
+      // 2. Remove the bar. If keyboard focus was on it, move focus to the
       //    main content so it is not lost.
       var hadFocus = banner.contains(document.activeElement);
       if (banner.parentNode) banner.parentNode.removeChild(banner);
+      unfitBanner();
       if (hadFocus) {
         try {
           var target = document.getElementById("main") || body;
@@ -172,9 +221,14 @@
       btn.addEventListener("click", function () { choose(btn.getAttribute("data-role")); });
     });
 
+    // In the reading order it sits right after the site header, even though
+    // it is drawn at the bottom of the screen.
     var header = document.querySelector(".site-header");
     if (header && header.parentNode) header.parentNode.insertBefore(banner, header.nextSibling);
     else body.insertBefore(banner, body.firstChild);
+    fitBanner();
+    window.addEventListener("resize", fitBanner);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitBanner, function () {});
   }
 
   function safeInit() {
