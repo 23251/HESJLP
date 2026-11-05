@@ -81,7 +81,7 @@ Keep the writing plain: short sentences, no jargon, phone numbers as digits. Kee
 
 ## Publish changes
 
-GitHub Pages serves the site. The workflow in `.github/workflows/pages.yml` runs on every push to `main`. It copies only the website files (the seven HTML pages, `config.js`, and `assets/`) and publishes them. The README, screenshots, database files, and tooling are not published.
+GitHub Pages serves the site. The workflow in `.github/workflows/pages.yml` runs on every push to `main`. It copies only the website files (every `.html` file at the root, `config.js`, and `assets/`) and publishes them. The README, screenshots, database files, and tooling are not published.
 
 One-time setup:
 
@@ -99,7 +99,7 @@ git commit -m "Describe the change"
 git push
 ```
 
-To add a new page to the published site, add its file name to the `cp` line in `.github/workflows/pages.yml`.
+Every `.html` file at the root of the repository is published, so a new page needs no change to the workflow.
 
 ## Visitor count (Supabase)
 
