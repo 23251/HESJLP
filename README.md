@@ -89,7 +89,7 @@ One-time setup:
 2. On GitHub, open the repository, then **Settings**, then **Pages**.
 3. Under **Build and deployment**, set **Source** to **GitHub Actions**. There is nothing else to pick.
 4. Open the **Actions** tab, select **Deploy to GitHub Pages**, and click **Run workflow** (or push any change to `main`).
-5. After about a minute, the run shows the public address, normally `https://23251.github.io/HESJLP/`. The same address appears under **Settings**, then **Pages**. Put that address in the QR code on the flyers.
+5. After about a minute, the run shows the public address, `https://illinoismedicaidinfo.github.io/`, because the repository is named after the organization. The same address appears under **Settings**, then **Pages**. Put that address in the QR code on the flyers.
 
 To publish a change afterward: commit and push to `main`. The workflow runs on its own and the site updates in about a minute. The **Actions** tab shows each run and whether it passed.
 
