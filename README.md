@@ -2,7 +2,7 @@
 
 A small, plain website that puts the content of five printed flyers and posters online for Illinois Medicaid patients and families. Patients reach it from a QR code on the flyer, so it is built for phones first. It is plain HTML, CSS, and JavaScript. There is no build step and nothing to install.
 
-The site asks each visitor once whether they are a patient or a provider. A patient or provider answer is saved as one row in a Supabase table so the project can count how many patients use the site. No names, no personal data.
+The site counts each first-time visitor as one row in a Supabase table, then asks once whether they are a patient or a provider. A patient or provider answer is saved as one more row, so the project can count how many people and how many patients use the site. No names, no personal data.
 
 ## What is where
 
@@ -10,6 +10,7 @@ The site asks each visitor once whether they are a patient or a provider. A pati
 |---|---|
 | `index.html` | Home page. Topic buttons, "Does this apply to you?", key dates, 3 things to do, links to every page. |
 | `keep-your-medicaid.html` | Work requirements, exemptions, keeping coverage, non-citizens, what to do if you lose Medicaid. |
+| `am-i-exempt.html` | "Am I exempt?" checklist quiz. Shows which exemptions might fit and who to call. Nothing is saved or sent. |
 | `get-care.html` | Where to get care without Medicaid: ER, community health centers, CareLink, hospital bills, kids and pregnancy. |
 | `clinics.html` | Free and low-cost clinics in Cook County, with addresses, phone links, and map links. |
 | `who-to-call.html` | Every phone number and website on the site in one list. |
@@ -19,7 +20,9 @@ The site asks each visitor once whether they are a patient or a provider. A pati
 | `assets/css/theme-civic.css` | Theme B: navy and gold, public-service look. |
 | `assets/css/theme-warm.css` | Theme C: cream, teal, and coral, soft clinic look. |
 | `assets/js/site.js` | Skip link, mobile menu, and the theme preview switch. |
-| `assets/js/visitor-count.js` | The patient/provider prompt and the Supabase save. |
+| `assets/js/visitor-count.js` | The visit count, the patient/provider prompt, and the Supabase save. |
+| `assets/js/quiz.js` | The "Am I exempt?" quiz logic. Without it, the page shows every result as a list. |
+| `assets/fonts/` | Atkinson Hyperlegible Bold, used for headings. Self-hosted. License in `OFL.txt`. |
 | `config.js` | Supabase project URL, public key, and table name. |
 | `supabase/schema.sql` | Creates the table and its security rules. Run once in Supabase. |
 | `scripts/verify-supabase.sh` | Checks the database rules from the command line. |
@@ -78,7 +81,7 @@ Keep the writing plain: short sentences, no jargon, phone numbers as digits. Kee
 
 ## Publish changes
 
-GitHub Pages serves the site. The workflow in `.github/workflows/pages.yml` runs on every push to `main`. It copies only the website files (the six HTML pages, `config.js`, and `assets/`) and publishes them. The README, screenshots, database files, and tooling are not published.
+GitHub Pages serves the site. The workflow in `.github/workflows/pages.yml` runs on every push to `main`. It copies only the website files (the seven HTML pages, `config.js`, and `assets/`) and publishes them. The README, screenshots, database files, and tooling are not published.
 
 One-time setup:
 
@@ -86,7 +89,7 @@ One-time setup:
 2. On GitHub, open the repository, then **Settings**, then **Pages**.
 3. Under **Build and deployment**, set **Source** to **GitHub Actions**. There is nothing else to pick.
 4. Open the **Actions** tab, select **Deploy to GitHub Pages**, and click **Run workflow** (or push any change to `main`).
-5. After about a minute, the run shows the public address, normally `https://23251.github.io/HESJLP/`. The same address appears under **Settings**, then **Pages**. Put that address in the QR code on the flyers.
+5. After about a minute, the run shows the public address, `https://illinoismedicaidinfo.github.io/`, because the repository is named after the organization. The same address appears under **Settings**, then **Pages**. Put that address in the QR code on the flyers.
 
 To publish a change afterward: commit and push to `main`. The workflow runs on its own and the site updates in about a minute. The **Actions** tab shows each run and whether it passed.
 
@@ -102,32 +105,46 @@ To add a new page to the published site, add its file name to the `cp` line in `
 
 ### How it works
 
-On the first visit in a browser, `assets/js/visitor-count.js` shows a small window: "Who is visiting today?" with three choices: patient or family member, provider or staff, or skip. The answer is remembered in that browser (localStorage key `hesjlp-visitor`), so the prompt never shows there again and repeat visits are not counted. A patient or provider answer is sent as one row, `{"role": "patient"}` or `{"role": "provider"}`, to the table `visitor_responses`. Skip sends nothing.
+On the first visit in a browser, `assets/js/visitor-count.js` does two things:
 
-If Supabase is down, paused, or unreachable, the pages work normally. The answer is simply not counted. Nothing is retried later.
+1. It sends one row, `{"role": "visit"}`, to the table `visitor_responses`. This counts every first-time visitor, whether or not they answer the question.
+2. It shows a small bar pinned to the bottom of the screen: "Who is visiting today?" with three choices: patient or family member, provider or staff, or skip. The bar stays on every page until the visitor chooses. A patient or provider answer is sent as one more row, `{"role": "patient"}` or `{"role": "provider"}`. Skip sends nothing.
 
-The key in `config.js` is Supabase's public "publishable" key. It is meant to be visible in web pages. The security rules in `supabase/schema.sql` are what protect the data: with that key, a visitor can add one patient or provider row and can never read, change, or delete rows.
+Both facts are remembered in that browser (localStorage key `hesjlp-visitor`), so a visit is counted once, the bar never shows there again after an answer, and repeat visits are not counted. The count is per browser, not per person.
+
+If Supabase is down, paused, or unreachable, the pages work normally. The row is simply not saved. Nothing is retried later.
+
+The key in `config.js` is Supabase's public "publishable" key. It is meant to be visible in web pages. The security rules in `supabase/schema.sql` are what protect the data: with that key, a visitor can add one visit, patient, or provider row and can never read, change, or delete rows.
 
 ### One-time setup
 
 1. Sign in at https://supabase.com/dashboard and open the project.
 2. Left menu: **SQL Editor**, then **New query**.
-3. Paste the whole contents of `supabase/schema.sql` and click **Run**. Running it again later is safe. It never deletes saved answers.
-4. Check it from a terminal in this folder. Every line should say PASS. Each run adds one test row with role `provider`, never `patient`.
+3. Paste the whole contents of `supabase/schema.sql` and click **Run**. Running it again later is safe. It never deletes saved answers. **Run it again after any change to the file.** For example, the `visit` role was added in Nov. 2026, and a database set up before that rejects visit rows until the file is run again.
+4. Check it from a terminal in this folder. Every line should say PASS. Each run adds two test rows, one `provider` and one `visit`, never `patient`.
 
 ```bash
 scripts/verify-supabase.sh https://bgwaofspmqaxnhpsbwvy.supabase.co sb_publishable_5Tfjj-lpZHxYzpJFHWbBTA_uJMJFyai
 ```
 
-This was run on Nov. 4, 2026 and every check passed.
+This was run on Nov. 4, 2026 and every check passed, before the `visit` role was added. Run it again after running the updated `schema.sql`.
 
 ### View the data
 
 - **Table Editor:** in the dashboard, left menu **Table Editor**, then `visitor_responses`. This shows every row.
-- **SQL Editor**, totals by role:
+- **SQL Editor**, totals by role (`visit` = first-time visitors, `patient` and `provider` = answers):
 
 ```sql
 select role, count(*) from public.visitor_responses group by role order by role;
+```
+
+- How many first-time visitors answered, and how many were patients:
+
+```sql
+select count(*) filter (where role = 'visit')                  as visitors,
+       count(*) filter (where role in ('patient', 'provider')) as answered,
+       count(*) filter (where role = 'patient')                as patients
+from public.visitor_responses;
 ```
 
 - Per day, Chicago time:
@@ -147,11 +164,11 @@ Supabase pauses free-plan projects after about a week with no activity. It sends
 2. Click **Restore project**. It takes a few minutes.
 3. Run `scripts/verify-supabase.sh` again to confirm.
 
-While the project is paused, the site still works and the prompt still shows, but answers are not counted. The dashboard says how long a paused project can still be restored, so do not leave it paused for months.
+While the project is paused, the site still works and the bar still shows, but visits and answers are not counted. The dashboard says how long a paused project can still be restored, so do not leave it paused for months.
 
 ### Turn the count off
 
-In `config.js`, set `supabaseUrl: ""`. The prompt no longer appears.
+In `config.js`, set `supabaseUrl: ""`. Nothing is counted and the bar no longer appears.
 
 ### See the prompt again in your own browser
 
@@ -162,9 +179,10 @@ Open any page with `?resetvisitor=1` added to the address, for example `index.ht
 | Check | How | Status |
 |---|---|---|
 | An answer saves | `scripts/verify-supabase.sh`, check 1 returns HTTP 201. Also clicked through in a real browser. | Passed Nov. 4, 2026 |
+| A first visit saves | `scripts/verify-supabase.sh`, check 1b returns HTTP 201 | Run after `schema.sql` is re-run |
 | A visitor can't read, edit, or delete rows | `scripts/verify-supabase.sh`, checks 2 and 3 return HTTP 401 | Passed Nov. 4, 2026 |
 | The database rejects invalid values | `scripts/verify-supabase.sh`, check 4: role `robot` and an extra field are rejected | Passed Nov. 4, 2026 |
-| The site works if Supabase is unavailable | Loaded with `config.js` pointing at an unreachable address: no errors, prompt closes, pages work | Passed Nov. 4, 2026 |
+| The site works if Supabase is unavailable | Loaded with `config.js` pointing at an unreachable address: no errors, bar closes, pages work | Passed Nov. 4, 2026 |
 | The layout works on a phone | Screenshots at 320, 375, 768, and 1280 px wide in `previews/`, no horizontal scroll | Passed Nov. 4, 2026 |
 | WCAG 2.1 AA | axe-core on every page and theme, keyboard walk-through, contrast ratios listed at the top of each theme file | See `previews/VERIFICATION.md` |
 
