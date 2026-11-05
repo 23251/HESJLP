@@ -36,7 +36,7 @@
      .phone-strip      full-width band with the main phone number
      .phone-list       who-to-call list;  .phone-item  one entry
                        .phone-name / .phone-for / .phone-meta / .phone-num
-     .tel              a tel: link styled as a big tappable number
+     .tel              a tel: link: inline in sentences, a call button when standalone
      .clinic-list      list of clinic cards;  .clinic  one card
                        .clinic-name / .clinic-addr / .clinic-actions
      .btn              button-like link;  .btn-primary  filled;  .btn-ghost  outline
@@ -48,6 +48,19 @@
    Visitor prompt (markup injected by visitor-count.js)
      .vp  .vp-card  .vp-btn  .vp-skip
    ========================================================================= */
+
+/* ---------- Spacing scale + accent defaults ----------
+   One 8px-based scale. Themes may override any of these on :root.
+   Accent ("call" / "urgent") fallbacks keep the civic and warm preview themes working. */
+:root {
+  --space-1: 0.5rem;   /*  8px */
+  --space-2: 1rem;     /* 16px */
+  --space-3: 1.5rem;   /* 24px */
+  --space-4: 2rem;     /* 32px */
+  --space-5: 2.5rem;   /* 40px */
+  --space-6: 3rem;     /* 48px */
+  --content-max: 760px;
+}
 
 /* ---------- Reset / base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -88,7 +101,7 @@ a:hover { text-decoration-thickness: 3px; }
   border-radius: 4px;
 }
 /* On primary-colored areas the ring flips to the inverse color */
-.phone-strip, .callout-strong, .site-footer { --color-focus: var(--color-focus-inverse, #fff); }
+.callout-strong, .site-footer { --color-focus: var(--color-focus-inverse, #fff); }
 
 .visually-hidden {
   position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
@@ -173,8 +186,13 @@ a:hover { text-decoration-thickness: 3px; }
 .page-head { padding: 1.75rem 0 2rem; }
 .page-head .lead { margin-bottom: 0; }
 .jump-nav { margin-top: 1.25rem; }
-.jump-nav h2 { font-size: var(--text-sm, 1.0625rem); font-weight: 700; margin: 0 0 0.5rem; color: var(--color-text); }
-.jump-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+/* Small uppercase label, not a 17px heading */
+.jump-nav h2 {
+  font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; line-height: 1.3;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin: 0 0 var(--space-1); color: var(--color-text-muted);
+}
+.jump-nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1); }
 .jump-nav a {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0.4rem 1rem;
   border-radius: var(--radius-pill, 999px); background: var(--color-surface);
@@ -182,6 +200,16 @@ a:hover { text-decoration-thickness: 3px; }
   color: var(--color-primary); font-weight: 600; text-decoration: none; font-size: var(--text-sm, 1.0625rem);
 }
 .jump-nav a:hover { border-color: var(--color-primary); background: var(--color-surface-alt); }
+/* Phones: tidy 2-column grid of equal-height chips; an odd last chip spans both columns (no orphan) */
+@media (max-width: 599.98px) {
+  .jump-nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .jump-nav li { display: flex; }
+  .jump-nav li:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .jump-nav a {
+    flex: 1; justify-content: center; text-align: center; line-height: 1.3;
+    padding: 0.5rem 0.625rem; border-radius: var(--radius-md, 14px);
+  }
+}
 
 /* ---------- Sections ---------- */
 .section { padding: 2.25rem 0; }
@@ -255,6 +283,8 @@ a:hover { text-decoration-thickness: 3px; }
   width: 0.4rem; height: 0.7rem; border: solid var(--color-primary-contrast); border-width: 0 3px 3px 0; transform: rotate(45deg);
 }
 @media (min-width: 900px) { .checklist.two-col { grid-template-columns: 1fr 1fr; max-width: none; } }
+/* Inside a card: no boxes-inside-a-box; light tinted rows, checkmarks kept */
+.card .checklist > li { border: 0; background: var(--color-surface-alt); border-radius: var(--radius-sm); }
 
 .bullets { padding-left: 1.25rem; max-width: 70ch; }
 .bullets > li { margin-bottom: 0.625rem; padding-left: 0.25rem; }
@@ -280,6 +310,26 @@ a:hover { text-decoration-thickness: 3px; }
 .callout-strong { background: var(--color-primary); color: var(--color-primary-contrast); border-left-color: var(--color-accent); }
 .callout-strong h2, .callout-strong h3, .callout-strong a { color: var(--color-primary-contrast); }
 
+/* ---------- Narrow single-column layout (get-care) ---------- */
+.layout-narrow .container { max-width: calc(var(--content-max, 760px) + 2rem); }
+.layout-narrow .page-head { padding-bottom: var(--space-4); }
+.layout-narrow .section { padding: 0 0 var(--space-3); }
+.layout-narrow .section + .section { padding-top: 0; }
+.layout-narrow .page-head + .section { padding-top: var(--space-4); }
+.layout-narrow .card, .layout-narrow .callout {
+  padding: clamp(var(--space-3), 6vw, var(--space-4)); max-width: none; margin: 0;
+}
+.layout-narrow .card > :last-child, .layout-narrow .callout > :last-child { margin-bottom: 0; }
+.layout-narrow .card h2 { margin-top: 0; }
+.layout-narrow .phone-strip { margin-top: var(--space-3); }
+
+/* Emergency card: terracotta edge + warm tint + icon, so it reads first while others stay calm */
+.card-urgent {
+  border-left: 6px solid var(--color-call, #9e3a1d);
+  background: var(--color-urgent-tint, #fcf1ec);
+}
+.card-urgent .eyebrow { color: var(--color-urgent-text, #7f2e17); background: var(--color-urgent-pill, #f7ddd2); }
+
 .path { list-style: none; padding: 0; margin: 0.75rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; }
 .path li { display: inline-flex; align-items: center; gap: 0.375rem; }
 .path li span {
@@ -293,7 +343,16 @@ a:hover { text-decoration-thickness: 3px; }
   padding: 0.125rem 0.625rem; border-radius: var(--radius-pill, 999px);
   background: var(--color-surface-alt); color: var(--color-primary);
 }
-.eyebrow { display: block; font-size: var(--text-sm, 1.0625rem); font-weight: 700; color: var(--color-primary); margin-bottom: 0.25rem; }
+/* Small tinted pill label that sits above an h2 without competing with it */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.4em; width: fit-content; max-width: 100%;
+  font-family: var(--font-body); font-size: 0.875rem; font-weight: 700; line-height: 1.3;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--color-primary); background: var(--color-surface-alt);
+  padding: 0.25rem 0.75rem; border-radius: var(--radius-pill, 999px);
+  margin-bottom: var(--space-1);
+}
+.eyebrow .icon { width: 1.1em; height: 1.1em; vertical-align: 0; }
 
 /* ---------- Buttons + tel links ---------- */
 .btn {
@@ -307,21 +366,60 @@ a:hover { text-decoration-thickness: 3px; }
 .btn-ghost { background: var(--color-surface); color: var(--color-primary); }
 .btn-ghost:hover { background: var(--color-surface-alt); }
 
-/* Inline tel links keep the line box but get a ~44px tall hit area via padding */
-.tel { display: inline; padding: 0.65em 0; font-weight: 700; white-space: nowrap; }
+/* Phone numbers. Two forms of one style (terracotta + phone icon; the icon is CSS-only,
+   so the accessible name stays the number):
+   - Inside a sentence: bold terracotta text with an icon and underline, so the sentence still reads smoothly.
+   - Standing on its own (.tel-big, phone strip, who-to-call list rows): a tap-to-call pill button, 44px+ tall. */
+.tel {
+  display: inline; padding-block: 0.65em; font-weight: 700; white-space: nowrap;
+  color: var(--color-call, var(--color-primary));
+  text-decoration-line: underline; text-decoration-thickness: 1px; text-underline-offset: 0.2em;
+}
+.tel:hover { color: var(--color-call-hover, var(--color-accent)); text-decoration-thickness: 2px; }
+.callout-strong .tel, .callout-strong .tel:hover { color: var(--color-primary-contrast); }
+.tel::before {
+  display: inline-block; vertical-align: -0.15em; margin-right: 0.35em;
+  content: ""; flex: none; width: 1.05em; height: 1.05em; background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6.6 10.8a15.2 15.2 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Standalone numbers: the button */
+.tel-big .tel, .phone-strip .tel, .phone-num .tel, .compact-list .tel {
+  display: inline-flex; align-items: center; gap: 0.5em; vertical-align: middle;
+  min-height: 44px; padding: 0.375rem 1.125rem; margin-block: 0.125rem;
+  border: 2px solid var(--color-call, var(--color-primary)); border-radius: var(--radius-pill, 999px);
+  background: var(--color-call, var(--color-primary)); color: var(--color-call-contrast, #fff);
+  line-height: 1.2; text-decoration: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.tel-big .tel::before, .phone-strip .tel::before, .phone-num .tel::before, .compact-list .tel::before { margin-right: 0; vertical-align: 0; }
+.tel-big .tel:hover, .phone-strip .tel:hover, .phone-num .tel:hover, .compact-list .tel:hover {
+  background: var(--color-call-hover, var(--color-accent)); border-color: var(--color-call-hover, var(--color-accent)); color: var(--color-call-contrast, #fff);
+}
+/* On the dark green callout the button gets a white edge so it stays distinct from the green */
+.callout-strong .tel-big .tel { border-color: var(--color-primary-contrast); }
+/* TTY: same button shape and icon, outlined, so it doesn't compete with the main number */
+.phone-num .tel-tty, .phone-num .tel-tty:hover { background: var(--color-surface); color: var(--color-call, var(--color-primary)); border-color: var(--color-call, var(--color-primary)); }
+.phone-num .tel-tty:hover { background: var(--color-urgent-tint, var(--color-surface-alt)); color: var(--color-call-hover, var(--color-accent)); }
+/* Bigger hero-size number */
+.tel-big .tel, .phone-strip .tel { font-size: clamp(1.375rem, 1.15rem + 1.1vw, 1.75rem); padding: 0.5rem 1.375rem; }
 /* Plain links inside text: extra vertical padding so the tap area is at least ~26px without changing line spacing */
 p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn) { padding-block: 0.2em; }
 
 /* ---------- Phone strip (who to call band) ---------- */
-.phone-strip { background: var(--color-primary); color: var(--color-primary-contrast); padding: 1.75rem 0; margin-top: 2rem; }
-.phone-strip .container { display: flex; flex-direction: column; gap: 1rem; }
-.phone-strip h2 { color: var(--color-primary-contrast); font-size: var(--text-h3, 1.25rem); margin: 0; }
-.phone-strip p { margin: 0; }
-.phone-strip a { color: var(--color-primary-contrast); }
-.phone-strip .tel { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); }
+/* Pale band with dark text, so the page doesn't end in three dark blocks */
+.phone-strip {
+  background: var(--color-surface-alt); color: var(--color-text);
+  border-top: 1px solid var(--color-border); padding: var(--space-4) 0; margin-top: var(--space-4);
+}
+.phone-strip .container { display: flex; flex-direction: column; gap: var(--space-2); }
+.phone-strip h2 { color: var(--color-text); font-size: var(--text-h3, 1.25rem); margin: 0 0 var(--space-1); }
+.phone-strip p { margin: 0 0 var(--space-1); }
+.phone-strip p:last-child { margin-bottom: 0; }
 .phone-strip .strip-more { font-weight: 600; }
-.phone-strip .btn { border-color: var(--color-primary-contrast); background: var(--color-primary-contrast); color: var(--color-primary); align-self: flex-start; }
-.phone-strip .btn:hover { background: var(--color-surface-alt); }
+.phone-strip .btn { border-color: var(--color-primary); background: var(--color-surface); color: var(--color-primary); align-self: flex-start; }
+.phone-strip .btn:hover { background: var(--color-surface-alt); border-color: var(--color-accent); color: var(--color-accent); }
 @media (min-width: 900px) { .phone-strip .container { flex-direction: row; align-items: center; justify-content: space-between; } }
 
 /* ---------- Who to call list ---------- */
@@ -331,9 +429,8 @@ p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn
 .phone-name { font-size: var(--text-h3, 1.25rem); margin: 0; }
 .phone-for { margin: 0; }
 .phone-meta { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); }
-.phone-num { margin: 0.25rem 0 0; display: flex; flex-wrap: wrap; gap: 0 1.25rem; }
-.phone-num .tel { font-size: 1.375rem; }
-.phone-num .tel-tty { font-size: var(--text-base); }
+.phone-num { margin: 0.25rem 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2); }
+.phone-num > span { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.375rem; }
 .compact-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--color-border); max-width: 52rem; }
 .compact-list li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0 1rem; padding: 0.375rem 0; border-bottom: 1px solid var(--color-border); }
 
@@ -347,6 +444,9 @@ p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn
 .clinic-note { margin: 0; color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); }
 .clinic-actions { display: grid; grid-template-columns: 1fr; gap: 0.5rem; margin-top: auto; padding-top: 0.75rem; }
 .clinic-actions .btn { min-height: 44px; padding: 0.4rem 1rem; }
+/* Clinic call buttons match the shared tap-to-call style (terracotta) */
+.clinic-actions .btn-primary[href^="tel:"] { background: var(--color-call, var(--color-primary)); border-color: var(--color-call, var(--color-primary)); color: var(--color-call-contrast, #fff); }
+.clinic-actions .btn-primary[href^="tel:"]:hover { background: var(--color-call-hover, var(--color-accent)); border-color: var(--color-call-hover, var(--color-accent)); }
 .group-meta { display: grid; gap: 0.5rem; margin-bottom: 1.25rem; max-width: 70ch; }
 .group-meta p { margin: 0; }
 
@@ -361,29 +461,29 @@ p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn
 .phone-strip + .site-footer { margin-top: 0; }
 
 /* ---------- Visitor prompt (DOM from visitor-count.js) ---------- */
-.vp {
-  position: fixed; inset: 0; z-index: 2000; display: flex; align-items: flex-end; justify-content: center;
-  padding: 1rem; background: var(--color-overlay, rgba(0, 0, 0, 0.6)); overflow-y: auto;
-}
-@media (min-width: 600px) { .vp { align-items: center; } }
+/* Small inline banner in normal page flow (not fixed, not a modal) */
+.vp { background: var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: var(--space-2) 0; }
 .vp-card {
-  width: 100%; max-width: 30rem; background: var(--color-surface); color: var(--color-text);
-  border-radius: var(--radius-lg); padding: 1.5rem 1.25rem 1.25rem; box-shadow: 0 20px 48px rgba(0, 0, 0, 0.3);
-  display: flex; flex-direction: column; gap: 0.75rem;
+  width: 100%; max-width: 72rem; margin: 0 auto; padding: 0 1rem; color: var(--color-text);
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1) var(--space-2);
 }
-.vp-card h2 { font-size: 1.5rem; margin: 0; color: var(--color-primary); }
-.vp-card p { margin: 0 0 0.5rem; }
+.vp-card h2 { flex: 1 1 100%; font-family: var(--font-body); font-size: var(--text-base, 1.125rem); font-weight: 700; line-height: 1.4; margin: 0; color: var(--color-text); }
+.vp-card p { margin: 0; }
 .vp-btn {
-  display: block; width: 100%; min-height: 52px; padding: 0.75rem 1rem; text-align: left;
-  font: inherit; font-weight: 700; cursor: pointer;
-  background: var(--color-primary); color: var(--color-primary-contrast);
-  border: 2px solid var(--color-primary); border-radius: var(--radius-md);
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0.5rem 1rem; text-align: left;
+  font: inherit; font-size: 1rem; font-weight: 700; line-height: 1.3; cursor: pointer;
+  background: var(--color-surface); color: var(--color-primary);
+  border: 2px solid var(--color-primary); border-radius: var(--radius-pill, 999px);
 }
-.vp-btn:hover { background: var(--color-accent); border-color: var(--color-accent); color: var(--color-accent-contrast); }
+.vp-btn:hover { background: var(--color-primary); color: var(--color-primary-contrast); }
 .vp-skip {
-  align-self: center; min-height: 44px; min-width: 44px; padding: 0.5rem 1.25rem;
-  font: inherit; font-weight: 600; cursor: pointer; background: transparent;
+  min-height: 44px; min-width: 44px; padding: 0.5rem 0.75rem;
+  font: inherit; font-size: 1rem; font-weight: 600; cursor: pointer; background: transparent;
   color: var(--color-link); border: 0; text-decoration: underline; text-underline-offset: 0.18em;
+}
+@media (max-width: 599.98px) {
+  .vp-btn { flex: 1 1 100%; }
+  .vp-skip { margin-inline-start: -0.75rem; }
 }
 .vp :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
 
@@ -404,25 +504,90 @@ p a:not(.btn):not(.tel), li a:not(.btn):not(.tel):not(.card-link):not(.topic-btn
   a { color: #000 !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-weight: normal; font-size: 0.9em; word-break: break-all; }
   a[href^="tel:"]::after { content: ""; }
+  .tel-big .tel, .phone-strip .tel, .phone-num .tel, .compact-list .tel { background: #fff !important; color: #000 !important; border: 1px solid #000 !important; min-height: 0; }
+  .tel { color: #000 !important; }
+  .tel::before { display: none; }
+  .card-urgent { background: #fff !important; border-left: 6px solid #000 !important; }
   .section, .section-alt { padding: 0.75rem 0; margin: 0; }
   h2, h3 { break-after: avoid; }
 }
 
 /* ---------- Small additions ---------- */
 .card-link .card-title, .card-link .card-text { display: block; }
-.tel-big .tel { font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2rem); }
 .clinic-addr + .clinic-note { margin-top: -0.125rem; }
 .phone-name a { display: inline-flex; align-items: center; min-height: 44px; }
 .card-title { font-family: var(--font-display); font-weight: 700; line-height: 1.3; }
 
 /* ---------- Source notes and the sources list ---------- */
 /* Links keep the shared inline-link padding (p a / li a rule above) for a ~26px tap area */
-.source-note { margin: 1rem 0 0; max-width: 70ch; font-size: var(--text-sm, 1.0625rem); line-height: 1.6; color: var(--color-text-muted); }
+.source-note { margin: var(--space-2) 0 0; max-width: 70ch; font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-subtle, #595959); }
+.source-note a {
+  color: inherit; text-decoration-line: underline; text-decoration-thickness: 1px;
+  text-decoration-color: var(--color-underline-subtle, rgba(47, 95, 40, 0.45)); text-underline-offset: 0.2em;
+}
+.source-note a:hover, .source-note a:focus-visible { color: var(--color-link); text-decoration-thickness: 2px; text-decoration-color: currentColor; }
 .clinic .source-note, .phone-item .source-note { margin-top: 0; }
-.callout-strong .source-note { color: var(--color-primary-contrast); }
+.callout-strong .source-note, .callout-strong .source-note a { color: var(--color-primary-contrast); }
+.callout-strong .source-note a { text-decoration-color: rgba(255, 255, 255, 0.55); }
+.callout-strong .source-note a:hover, .callout-strong .source-note a:focus-visible { color: var(--color-primary-contrast); text-decoration-color: currentColor; }
 .source-list { list-style: none; padding: 0; margin: 0 0 2rem; display: grid; gap: 0.875rem; max-width: 70ch; }
 .source-list:last-child { margin-bottom: 0; }
 .source-list li { display: flex; flex-direction: column; align-items: flex-start; }
 .source-list a { font-weight: 600; }
 .source-for { color: var(--color-text-muted); font-size: var(--text-sm, 1.0625rem); line-height: 1.5; }
 #sources h3 { margin-top: 1.5rem; }
+
+/* ---------- "Am I exempt?" quiz (am-i-exempt.html) ---------- */
+.quiz fieldset { border: 0; padding: 0; margin: var(--space-3) 0 0; min-width: 0; }
+.quiz legend { font-family: var(--font-display); font-weight: 700; font-size: var(--text-h3, 1.25rem); line-height: 1.3; padding: 0; margin-bottom: var(--space-1); }
+.quiz-options { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1); }
+.quiz-option {
+  display: flex; align-items: flex-start; gap: 0.75rem; min-height: 44px; cursor: pointer;
+  padding: 0.75rem 1rem; border: 1px solid var(--color-border-strong, var(--color-border)); border-radius: var(--radius-sm);
+  background: var(--color-surface); line-height: 1.45;
+}
+.quiz-option input { flex: none; width: 1.375rem; height: 1.375rem; margin: 0.05rem 0 0; accent-color: var(--color-primary); cursor: pointer; }
+.quiz-option:hover { border-color: var(--color-primary); }
+.quiz-option:has(input:checked) { background: var(--color-surface-alt); border-color: var(--color-primary); font-weight: 600; }
+.quiz-option:has(input:focus-visible) { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.quiz-option input:focus-visible { outline: none; }
+.quiz-link { margin: var(--space-3) 0 0; }
+.quiz-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
+.quiz-actions[hidden] { display: none; }
+.quiz-note { margin-top: var(--space-3) !important; max-width: none; }
+.quiz-note p { margin: 0; }
+.quiz-results h2:focus { outline: none; }
+.quiz-results h2:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.quiz-summary { font-size: var(--text-lg, 1.25rem); margin: 0 0 var(--space-3); }
+.result-list { display: grid; gap: var(--space-3); }
+.result[hidden], .result-unsure[hidden] { display: none; }
+.result h3 { font-size: var(--text-h2, 1.5rem); margin: 0 0 var(--space-1); }
+.result h4 { font-size: var(--text-h3, 1.25rem); margin: var(--space-3) 0 var(--space-1); }
+.result-update { margin: var(--space-2) 0 0 !important; padding: var(--space-2) var(--space-3) !important; }
+.result-update p { margin: 0; }
+.result-everyone { margin-top: var(--space-3) !important; }
+.result-everyone h3 { margin-top: 0; }
+@media print {
+  .quiz-actions { display: none !important; }
+  .quiz-option { border: 1px solid #999 !important; }
+}
+
+/* ---------- Very narrow viewports (e.g. 320px phone at 200% zoom = 160 CSS px) ---------- */
+@media (max-width: 259.98px) {
+  .jump-nav ul { grid-template-columns: 1fr; }
+  .jump-nav li:last-child:nth-child(odd) { grid-column: auto; }
+  .tel { white-space: normal; }
+  .phone-num .tel, .compact-list .tel { padding-inline: 0.75rem; }
+  .tel-big .tel, .phone-strip .tel { font-size: 1.25rem; padding-inline: 0.875rem; }
+  .layout-narrow .container { padding-inline: 0.5rem; }
+  .layout-narrow .card, .layout-narrow .callout { padding: 0.75rem; }
+  .card .checklist > li { min-width: 0; padding-left: 2.75rem; padding-right: 0.5rem; overflow-wrap: anywhere; }
+  .card .checklist > li::before { left: 0.625rem; }
+  .card .checklist > li::after { left: 1.08rem; }
+  .btn { white-space: normal; max-width: 100%; }
+  .eyebrow { letter-spacing: 0.02em; padding-inline: 0.5rem; overflow-wrap: anywhere; }
+  .quiz-options > li, .quiz-option { min-width: 0; }
+  .quiz-option { padding: 0.5rem; gap: 0.5rem; overflow-wrap: anywhere; }
+  .quiz-actions .btn { flex: 1 1 100%; }
+  h1, h2 { overflow-wrap: anywhere; hyphens: auto; }
+}

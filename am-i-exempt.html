@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en" data-theme="green">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Am I Exempt? | Medicaid Is Changing</title>
+  <meta name="description" content="Answer a few questions to see which Medicaid work rule exemptions might fit you, and who to call to find out for sure.">
+  <link rel="preload" href="assets/fonts/atkinson-hyperlegible-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/theme-green.css" id="theme-css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="index.html"><span class="brand-mark"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 19c0-8 5-14 15-15-1 10-7 15-15 15z"/><path d="M5 19l7-7"/></svg></span>Medicaid Is Changing</a>
+      <button type="button" class="nav-toggle" aria-expanded="true" aria-controls="site-nav" hidden>Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+        <li><a href="keep-your-medicaid.html">Keep your Medicaid</a></li>
+        <li><a href="am-i-exempt.html" aria-current="page">Am I exempt?</a></li>
+        <li><a href="get-care.html">Get care</a></li>
+        <li><a href="clinics.html">Clinics</a></li>
+        <li><a href="who-to-call.html">Who to call</a></li>
+        <li><a href="about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="layout-narrow">
+    <!-- Page title -->
+    <div class="page-head">
+      <div class="container">
+        <h1>Am I Exempt from Work Rules?</h1>
+        <p class="lead">Check what fits you to see which exemptions might apply and who to call.</p>
+        <div class="callout quiz-note">
+          <p><strong>This quiz can't decide if you're exempt. Only HFS can.</strong> Use it to know what to ask. Nothing you check is saved or sent.</p>
+        </div>
+      </div>
+    </div>
+
+    <form class="quiz" id="quiz" novalidate>
+      <!-- Step 1 -->
+      <section class="section" id="step-1" aria-labelledby="step1-title">
+        <div class="container">
+          <div class="card">
+            <span class="eyebrow">Step 1</span>
+            <h2 id="step1-title">Do the work rules apply to you?</h2>
+            <p>Work rules are only for ACA Adults. Check any that are true for you.</p>
+            <fieldset>
+              <legend class="visually-hidden">Do the work rules apply to you?</legend>
+              <ul class="quiz-options">
+                <li><label class="quiz-option"><input type="checkbox" name="a" value="not-aca"> I'm younger than 19 or older than 64</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="a" value="not-aca"> I have Medicare or qualify for it</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="a" value="not-aca"> My child (or a child I'm related to) under 18 lives with me</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="a" value="not-aca"> I'm in another Medicaid group (AABD, Moms &amp; Babies, Family Care)</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="a" value="group-unsure"> I'm not sure which Medicaid group I'm in</label></li>
+              </ul>
+            </fieldset>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2 -->
+      <section class="section" id="step-2" aria-labelledby="step2-title">
+        <div class="container">
+          <div class="card">
+            <span class="eyebrow">Step 2</span>
+            <h2 id="step2-title">Do any of these fit you?</h2>
+            <p>Check all that are true for you now.</p>
+
+            <fieldset>
+              <legend>Health</legend>
+              <ul class="quiz-options">
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health"> I'm blind or have a disability (by Social Security standards)</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health"> I have a serious mental health condition</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health"> I have a drug or alcohol use condition</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health"> I have a serious or complex medical condition that needs regular treatment</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health"> I have a physical, intellectual, or developmental disability that makes daily activities hard</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="health-unsure"> I have a health condition, but I'm not sure if it counts</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="treatment"> I'm in a program to treat drug or alcohol use</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="hardship"> I'm staying in a hospital, rehab, or psychiatric hospital, or I must travel far for medical care</label></li>
+              </ul>
+            </fieldset>
+
+            <fieldset>
+              <legend>Family and caregiving</legend>
+              <ul class="quiz-options">
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="pregnant"> I'm pregnant, or my pregnancy ended in the last 12 months</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="caregiver"> I care for a child under 14 (paid or unpaid)</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="caregiver"> I care for a person with a disability (paid or unpaid)</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="foster"> I was in foster care and I'm now under 26</label></li>
+              </ul>
+            </fieldset>
+
+            <fieldset>
+              <legend>Other</legend>
+              <ul class="quiz-options">
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="veteran"> I'm a veteran rated 100% disabled by the VA</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="native"> I'm American Indian or Alaska Native, or can get care through the Indian Health Service</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="jail"> I'm in jail or prison, or got out in the last 3 months</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="tanf"> I get TANF and follow its work rules</label></li>
+                <li><label class="quiz-option"><input type="checkbox" name="b" value="snap"> I get SNAP and meet its work rules, or I'm in SNAP's 3-month grace period</label></li>
+              </ul>
+            </fieldset>
+
+            <div class="quiz-actions" hidden>
+              <button type="submit" class="btn btn-primary">See my results</button>
+              <button type="reset" class="btn btn-ghost">Start over</button>
+            </div>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </div>
+        </div>
+      </section>
+    </form>
+
+    <!-- Results. Without JavaScript, every result shows as a reference list. -->
+    <section class="section quiz-results" id="results" aria-labelledby="results-title">
+      <div class="container">
+        <h2 id="results-title" tabindex="-1">What each answer means</h2>
+        <p class="quiz-summary" id="results-summary">Find the ones that fit you. Then follow the steps and call for help.</p>
+
+        <div class="result-list">
+          <article class="card result" data-result="not-aca" aria-labelledby="r-notaca">
+            <span class="eyebrow">Work rules may not apply</span>
+            <h3 id="r-notaca">You may not be an ACA Adult</h3>
+            <p>Work rules are only for ACA Adults. If you're under 19 or over 64, have Medicare, have a related child under 18 living with you, or are in another Medicaid group, they likely don't apply to you.</p>
+            <ul class="bullets">
+              <li>Check your medical group in State letters, or in Manage My Case: Case Summary → Benefit Details → Notices.</li>
+              <li>Think HFS has you in the wrong group? Call ABE Customer Service.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18008436154">1-800-843-6154</a> <span>TTY: <a class="tel tel-tty" href="tel:+18663245553">1-866-324-5553</a></span></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a></p>
+          </article>
+
+          <article class="card result" data-result="group-unsure" aria-labelledby="r-group">
+            <span class="eyebrow">Check first</span>
+            <h3 id="r-group">Find out your Medicaid group</h3>
+            <p>Your group decides if the work rules apply to you.</p>
+            <ul class="bullets">
+              <li>Sign in to Manage My Case at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a>. Go to Case Summary → Benefit Details → Notices.</li>
+              <li>Or check State letters for your "medical group," or ask your health plan.</li>
+              <li>Or call Illinois Medicaid (HFS).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/medicalclients/medicaidguide/changes.html" target="_blank" rel="noopener">Illinois HFS</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a></p>
+          </article>
+
+          <article class="card result" data-result="health" aria-labelledby="r-health">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-health">Health conditions ("special medical needs")</h3>
+            <p class="result-unsure" data-show-if="health-unsure"><strong>Not sure if your condition counts? You don't have to figure it out alone.</strong> The steps below can help you find out.</p>
+            <p>People with special medical needs (HFS calls this "medically frail") don't have to meet work rules. HFS lists these groups:</p>
+            <ul class="bullets">
+              <li>Blind or disabled under Social Security standards</li>
+              <li>A drug or alcohol use condition</li>
+              <li>A serious mental health condition</li>
+              <li>A physical, intellectual, or developmental disability that makes daily activities hard</li>
+              <li>A serious or complex medical condition that needs regular treatment</li>
+            </ul>
+            <p><strong>HFS decides if your condition counts.</strong> It will check information it already has first. If it can't confirm, it may ask you for more information.</p>
+            <div class="callout result-update">
+              <p><strong>These rules are changing.</strong> On Oct. 29, 2026, a federal judge ruled that people in these groups don't also have to prove they can't work. Illinois was one of the states that sued. HFS hasn't updated its guidance yet, so check back.</p>
+            </div>
+            <h4>What to do</h4>
+            <ul class="bullets">
+              <li>Use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a>: "Check to see if I meet SNAP &amp; Medicaid Work Requirements." It can help you ask for an exemption.</li>
+              <li>Ask your doctor or clinic about your condition, and keep copies of records in case HFS asks.</li>
+              <li>Questions about your coverage? Call Illinois Medicaid (HFS).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <ul class="bullets">
+              <li>Need free legal help? Use <a href="https://www.illinoislegalaid.org/get-legal-help" target="_blank" rel="noopener">Illinois Legal Aid Online's Get Legal Help</a>.</li>
+              <li>Living with HIV? AIDS Foundation Chicago helps with insurance questions (bilingual, Mon–Fri 8:30–5:30).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+13127849060">312-784-9060</a></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a>, <a href="https://stateline.org/?p=18999" target="_blank" rel="noopener">Stateline: court ruling</a>, <a href="https://www.illinoisattorneygeneral.gov/news/story/attorney-general-raoul-sues-trump-administration-over-unlawful-implementation-of-medicaid-work-requirements" target="_blank" rel="noopener">Illinois Attorney General</a>, <a href="https://www.illinoislegalaid.org/site-faqs/using-get-legal-help" target="_blank" rel="noopener">Illinois Legal Aid Online: Get Legal Help</a>, <a href="https://www.aidschicago.org/i-need/medicaid-medicare-and-health-insurance/" target="_blank" rel="noopener">AIDS Foundation of Chicago</a></p>
+          </article>
+
+          <article class="card result" data-result="treatment" aria-labelledby="r-treat">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-treat">In drug or alcohol treatment</h3>
+            <p>People in a program to treat drug or alcohol use don't have to meet work rules. A drug or alcohol use condition can also count as a special medical need.</p>
+            <ul class="bullets">
+              <li>Use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a> to ask for an exemption.</li>
+              <li>Ask your treatment program for a letter or records in case HFS asks.</li>
+            </ul>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a></p>
+          </article>
+
+          <article class="card result" data-result="hardship" aria-labelledby="r-hard">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-hard">Short-term hardship</h3>
+            <p>A hospital, rehab, or psychiatric hospital stay, or traveling far for medical care you can't get nearby, can count. <strong>You must ask for this exemption.</strong></p>
+            <p>HFS gives this exemption on its own if you live in a county with a federal disaster or high unemployment. It will tell you.</p>
+            <ul class="bullets">
+              <li>Use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a>, or call ABE Customer Service.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18008436154">1-800-843-6154</a> <span>TTY: <a class="tel tel-tty" href="tel:+18663245553">1-866-324-5553</a></span></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a></p>
+          </article>
+
+          <article class="card result" data-result="pregnant" aria-labelledby="r-preg">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-preg">Pregnant or recently pregnant</h3>
+            <p>If you're pregnant, or your pregnancy ended in the last 12 months (including a miscarriage), you don't have to meet work rules. This includes getting coverage after pregnancy through Moms &amp; Babies.</p>
+            <ul class="bullets">
+              <li>Tell HFS you're pregnant. Call Illinois Medicaid (HFS).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </article>
+
+          <article class="card result" data-result="caregiver" aria-labelledby="r-care">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-care">Caregivers</h3>
+            <p>Parents, guardians, relatives, and family caregivers (paid or unpaid) of a child under 14 or a person with a disability don't have to meet work rules.</p>
+            <ul class="bullets">
+              <li>Use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a> to ask for an exemption, or call ABE Customer Service.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18008436154">1-800-843-6154</a> <span>TTY: <a class="tel tel-tty" href="tel:+18663245553">1-866-324-5553</a></span></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </article>
+
+          <article class="card result" data-result="foster" aria-labelledby="r-foster">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-foster">Former foster youth under 26</h3>
+            <p>If you had Medicaid while in foster care and you're under 26, you don't have to meet work rules. It doesn't matter which state you were in foster care in.</p>
+            <ul class="bullets">
+              <li>Use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a>, or call Illinois Medicaid (HFS).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </article>
+
+          <article class="card result" data-result="veteran" aria-labelledby="r-vet">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-vet">Veterans rated 100% disabled</h3>
+            <p>Veterans with a VA disability rating of 100% don't have to meet work rules.</p>
+            <ul class="bullets">
+              <li>Check your rating on the <a href="https://www.va.gov/disability/view-disability-rating/" target="_blank" rel="noopener">VA disability rating page</a>.</li>
+              <li>Then use the screener at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a> to ask for an exemption.</li>
+            </ul>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a>, <a href="https://www.va.gov/disability/view-disability-rating/" target="_blank" rel="noopener">VA: View your disability ratings</a></p>
+          </article>
+
+          <article class="card result" data-result="native" aria-labelledby="r-native">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-native">American Indian or Alaska Native</h3>
+            <p>American Indians, Alaska Natives, American Urban Indians, California Indians, members of a recognized tribe, and people who can get care through the Indian Health Service don't have to meet work rules.</p>
+            <ul class="bullets">
+              <li>Make sure HFS knows. Call Illinois Medicaid (HFS).</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <p class="source-note">Source: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a></p>
+          </article>
+
+          <article class="card result" data-result="jail" aria-labelledby="r-jail">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-jail">In jail or prison, or recently released</h3>
+            <p>If you're in jail or prison now, or got out in the last 3 months, you don't have to meet work rules.</p>
+            <ul class="bullets">
+              <li>Keep your release papers. Call Illinois Medicaid (HFS) with questions.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </article>
+
+          <article class="card result" data-result="tanf" aria-labelledby="r-tanf">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-tanf">Getting TANF</h3>
+            <p>If you get TANF and follow its work rules, you don't have to meet Medicaid's work rules too.</p>
+            <ul class="bullets">
+              <li>Questions? Call ABE Customer Service.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18008436154">1-800-843-6154</a> <span>TTY: <a class="tel tel-tty" href="tel:+18663245553">1-866-324-5553</a></span></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a></p>
+          </article>
+
+          <article class="card result" data-result="snap" aria-labelledby="r-snap">
+            <span class="eyebrow">May be exempt</span>
+            <h3 id="r-snap">Getting SNAP</h3>
+            <p>Meeting SNAP's work rules, or being in SNAP's 3-month grace period, counts for Medicaid. HFS marks you exempt on its own. <strong>A SNAP exemption may not count for Medicaid.</strong></p>
+            <ul class="bullets">
+              <li>Check your SNAP status in Manage My Case at <a href="https://abe.illinois.gov" target="_blank" rel="noopener">abe.illinois.gov</a>, or call ABE Customer Service.</li>
+            </ul>
+            <p class="phone-num"><a class="tel" href="tel:+18008436154">1-800-843-6154</a> <span>TTY: <a class="tel tel-tty" href="tel:+18663245553">1-866-324-5553</a></span></p>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a></p>
+          </article>
+
+          <article class="card result" data-result="none" aria-labelledby="r-none">
+            <span class="eyebrow">Work rules may apply</span>
+            <h3 id="r-none">You may need to meet the work rules</h3>
+            <p>If you're an ACA Adult and none of these fit you, do ONE of these for at least 1 month out of every 6:</p>
+            <ul class="bullets">
+              <li>Earn $580 or more in the month</li>
+              <li>Go to school at least half-time</li>
+              <li>Do 80 hours of work, volunteering, school, or a work program in a month</li>
+            </ul>
+            <ul class="bullets">
+              <li>Find work programs at <a href="https://snapworkrequirements.illinois.gov" target="_blank" rel="noopener">snapworkrequirements.illinois.gov</a>.</li>
+              <li>If things change, like you get sick or start caring for someone, you can ask for an exemption then.</li>
+              <li><a href="keep-your-medicaid.html#work-requirements">Read more about the work rules</a></li>
+            </ul>
+            <p class="source-note">Sources: <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/englishhr1phase2toolkit.pdf" target="_blank" rel="noopener">HFS work rules toolkit</a>, <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a></p>
+          </article>
+        </div>
+
+        <!-- Always shown -->
+        <div class="callout callout-strong result-everyone">
+          <h3>For everyone, even if you're exempt</h3>
+          <ul class="bullets">
+            <li>ACA Adults must renew every 6 months, even if exempt. Work rules start at your first renewal on or after Jan. 1, 2027 (first renewals: March). New applications after 5 p.m. on Dec. 31, 2026 must meet them too.</li>
+            <li>Read State mail right away. If HFS asks for more information, you have 30 days to send it. You're still covered during that time.</li>
+            <li>Keep proof of your hours or exemption.</li>
+            <li>HFS says the abe.illinois.gov screener and exemption requests are coming in late 2026. Can't find them yet? Call ABE Customer Service at 1-800-843-6154 (TTY 1-866-324-5553).</li>
+            <li>If HFS can't confirm you're exempt in 2027, you can promise that you are. (Lying about it is a crime.)</li>
+            <li>Think a decision is wrong? You have 60 days to appeal. Call Medicaid Appeals:</li>
+          </ul>
+          <p class="tel-big"><a class="tel" href="tel:+18004350774">1-800-435-0774</a></p>
+          <p>TTY: <a class="tel" href="tel:+18777347429">1-877-734-7429</a></p>
+          <p class="source-note">Sources: <a href="https://hfs.illinois.gov/info/fedresctr/faqshowwillfedchimpactmedicaid.html" target="_blank" rel="noopener">HFS Medicaid FAQs</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/medicalclients/medicaidguide/ACAAdultCustomerNotice083126ToPrint.pdf" target="_blank" rel="noopener">HFS letter to ACA Adults</a>, <a href="https://hfs.illinois.gov/content/dam/soi/en/web/hfs/info/fedresctr/hr1mod4exempteng.pdf" target="_blank" rel="noopener">HFS exemptions guide</a>, <a href="https://www.illinoislegalaid.org/legal-information/appealing-medicaid-decision" target="_blank" rel="noopener">Illinois Legal Aid Online</a></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section: Who to call strip -->
+    <section class="phone-strip" id="call-hfs" aria-labelledby="call-hfs-title">
+      <div class="container">
+        <div>
+          <h2 id="call-hfs-title">Questions? Call Illinois Medicaid (HFS)</h2>
+          <p><a class="tel" href="tel:+18778055312">1-877-805-5312</a></p>
+          <p>Coverage &amp; renewal questions</p>
+        </div>
+        <a class="btn" href="who-to-call.html">See every phone number<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-note">Information checked Nov. 2026. Call ahead, since programs and services can change.</p>
+      <ul class="footer-links" aria-label="Footer">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="keep-your-medicaid.html">Keep your Medicaid</a></li>
+        <li><a href="am-i-exempt.html">Am I exempt?</a></li>
+        <li><a href="get-care.html">Get care</a></li>
+        <li><a href="clinics.html">Clinics</a></li>
+        <li><a href="who-to-call.html">Who to call</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="about.html#sources">Sources</a></li>
+      </ul>
+      <p class="footer-note">This is not legal or medical advice. <a href="about.html">About this site</a></p>
+    </div>
+  </footer>
+  <script src="config.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/quiz.js" defer></script>
+  <script src="assets/js/visitor-count.js" defer></script>
+</body>
+</html>

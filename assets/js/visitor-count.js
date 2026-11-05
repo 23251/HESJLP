@@ -2,7 +2,7 @@
  * visitor-count.js — the one-time "Who is visiting today?" prompt.
  *
  * WHAT IT DOES
- *   The first time someone opens the site in a browser, a small window asks
+ *   The first time someone opens the site in a browser, a small banner asks
  *   whether they are a patient/family member or a provider/staff (or Skip).
  *   The answer is remembered in that browser (localStorage key
  *   "hesjlp-visitor") so the prompt never shows there again. A patient or
@@ -130,52 +130,15 @@
     if (document.getElementById("visitor-prompt")) return; // already on page
 
     var body = document.body;
-    var dialog = document.createElement("div");
-    dialog.id = "visitor-prompt";
-    dialog.className = "vp";
-    dialog.setAttribute("role", "dialog");
-    dialog.setAttribute("aria-modal", "true");
-    dialog.setAttribute("aria-labelledby", "vp-title");
-    dialog.hidden = true;
-    dialog.innerHTML = MARKUP;
+    // A small banner in normal page flow, right under the site header.
+    // Not a dialog: no aria-modal, no focus trap, no inert background.
+    var banner = document.createElement("section");
+    banner.id = "visitor-prompt";
+    banner.className = "vp";
+    banner.setAttribute("aria-labelledby", "vp-title");
+    banner.innerHTML = MARKUP;
 
-    var buttons = [].slice.call(dialog.querySelectorAll("button[data-role]"));
-    var useInert = "inert" in HTMLElement.prototype;
-    var hiddenSiblings = []; // elements we made inert/aria-hidden, to undo later
-
-    function hideBackground() {
-      [].forEach.call(body.children, function (el) {
-        if (el === dialog || el.tagName === "SCRIPT") return;
-        if (useInert) {
-          if (!el.inert) { el.inert = true; hiddenSiblings.push(el); }
-        } else if (el.getAttribute("aria-hidden") !== "true") {
-          el.setAttribute("aria-hidden", "true");
-          hiddenSiblings.push(el);
-        }
-      });
-    }
-    function restoreBackground() {
-      hiddenSiblings.forEach(function (el) {
-        if (useInert) el.inert = false; else el.removeAttribute("aria-hidden");
-      });
-      hiddenSiblings = [];
-    }
-
-    function onKeydown(e) {
-      if (e.key === "Escape" || e.key === "Esc") {
-        e.preventDefault();
-        choose("skip");
-        return;
-      }
-      if (e.key === "Tab") {
-        var i = buttons.indexOf(document.activeElement);
-        var next;
-        if (e.shiftKey) next = i <= 0 ? buttons.length - 1 : i - 1;
-        else next = (i === -1 || i === buttons.length - 1) ? 0 : i + 1;
-        e.preventDefault();
-        buttons[next].focus();
-      }
-    }
+    var buttons = [].slice.call(banner.querySelectorAll("button[data-role]"));
 
     var done = false;
     function choose(role) {
@@ -183,23 +146,24 @@
       done = true;
       // 1. Remember first, so a failed request is never retried later.
       storageSet(JSON.stringify({ role: role, at: new Date().toISOString() }));
-      // 2. Close and clean up.
-      document.removeEventListener("keydown", onKeydown, true);
-      dialog.hidden = true;
-      restoreBackground();
-      if (dialog.parentNode) dialog.parentNode.removeChild(dialog);
-      // Return focus to the page body so the next Tab starts at the skip link.
-      try {
-        var hadTabindex = body.hasAttribute("tabindex");
-        if (!hadTabindex) body.setAttribute("tabindex", "-1");
-        body.focus({ preventScroll: true });
-        if (!hadTabindex) {
-          body.addEventListener("blur", function rm() {
-            body.removeAttribute("tabindex");
-            body.removeEventListener("blur", rm);
-          });
-        }
-      } catch (e) { /* ignore */ }
+      // 2. Remove the banner. If keyboard focus was on it, move focus to the
+      //    main content so it is not lost.
+      var hadFocus = banner.contains(document.activeElement);
+      if (banner.parentNode) banner.parentNode.removeChild(banner);
+      if (hadFocus) {
+        try {
+          var target = document.getElementById("main") || body;
+          var hadTabindex = target.hasAttribute("tabindex");
+          if (!hadTabindex) target.setAttribute("tabindex", "-1");
+          target.focus({ preventScroll: true });
+          if (!hadTabindex) {
+            target.addEventListener("blur", function rm() {
+              target.removeAttribute("tabindex");
+              target.removeEventListener("blur", rm);
+            });
+          }
+        } catch (e) { /* ignore */ }
+      }
       // 3. Count it (patient/provider only).
       if (role === "patient" || role === "provider") send(cfg, role);
     }
@@ -208,11 +172,9 @@
       btn.addEventListener("click", function () { choose(btn.getAttribute("data-role")); });
     });
 
-    body.appendChild(dialog);
-    hideBackground();
-    dialog.hidden = false;
-    document.addEventListener("keydown", onKeydown, true);
-    buttons[0].focus();
+    var header = document.querySelector(".site-header");
+    if (header && header.parentNode) header.parentNode.insertBefore(banner, header.nextSibling);
+    else body.insertBefore(banner, body.firstChild);
   }
 
   function safeInit() {
